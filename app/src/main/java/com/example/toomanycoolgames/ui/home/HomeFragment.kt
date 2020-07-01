@@ -44,6 +44,7 @@ class HomeFragment : Fragment() {
     private fun initializeViews(
         searchResults: List<Game>
     ) {
+        binding.progressGamesList.visibility = View.GONE
         val gamesAdapter: RecyclerView.Adapter<*> = GamesListAdapter(searchResults)
         binding.currentGames.apply {
             setHasFixedSize(true)
