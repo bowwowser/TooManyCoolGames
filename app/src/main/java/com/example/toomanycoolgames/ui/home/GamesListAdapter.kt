@@ -1,29 +1,40 @@
 package com.example.toomanycoolgames.ui.home
 
+import ImageSize
+import ImageType
+import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.toomanycoolgames.databinding.ItemGameBinding
+import imageBuilder
+import proto.Game
 
-class GamesListAdapter(private val games: Array<String>) :
-    RecyclerView.Adapter<GamesListAdapter.ViewHolder>() {
+class GamesListAdapter(private val games: List<Game>) :
+    RecyclerView.Adapter<GamesListAdapter.GameHolder>() {
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameHolder {
+        val gameBinding =
+            ItemGameBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return GameHolder(gameBinding)
     }
 
-    override fun getItemCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getItemCount() = games.size
+
+    override fun onBindViewHolder(holder: GameHolder, position: Int) {
+        holder.bind(games[position])
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    class GameHolder(
+        private val gameBinding: ItemGameBinding
+    ) : RecyclerView.ViewHolder(gameBinding.root) {
 
-    class ViewHolder(val textView: TextView) : RecyclerView.ViewHolder(textView) {
+        fun bind(game: Game) {
+            gameBinding.gameName.text = game.name
 
-        init {
-
+            Glide.with(gameBinding.root.context)
+                .load(imageBuilder(game.cover.imageId, ImageSize.COVER_BIG, ImageType.PNG))
+                .into(gameBinding.gameCover)
         }
     }
 }

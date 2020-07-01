@@ -4,42 +4,51 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.toomanycoolgames.R
+import com.example.toomanycoolgames.data.Result
+import com.example.toomanycoolgames.databinding.HomeFragmentBinding
+import proto.Game
 
 class HomeFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private var _binding: HomeFragmentBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
+        _binding = HomeFragmentBinding.inflate(inflater, container, false)
 
-        initializeViews(root)
-        homeViewModel.text.observe(this, Observer {
-            textView.text = it
+        val model: HomeViewModel by viewModels()
+        model.searchResults.observe(viewLifecycleOwner, Observer { results ->
+            when (results) {
+                is Result.Success<List<Game>> -> initializeViews(results.data)
+                is Result.Error -> showError(results.exception)
+            }
         })
-        return root
+
+        return binding.root
     }
 
-    private fun initializeViews(root: View) {
-        val gamesLayoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
-        val gamesAdapter: RecyclerView.Adapter<*> =
+    private fun showError(exception: Exception) {
+        binding.textError.visibility = View.VISIBLE
+        binding.textError.text = "Error!!!\n${exception.message}"
+    }
 
-        val listGames = root.findViewById<RecyclerView>(R.id.list_current_games).apply {
+    private fun initializeViews(
+        searchResults: List<Game>
+    ) {
+        val gamesAdapter: RecyclerView.Adapter<*> = GamesListAdapter(searchResults)
+        binding.currentGames.apply {
             setHasFixedSize(true)
-            layoutManager = gamesLayoutManager
-
+            layoutManager = LinearLayoutManager(context)
+            adapter = gamesAdapter
         }
     }
 }
