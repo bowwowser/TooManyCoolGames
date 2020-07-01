@@ -1,13 +1,17 @@
 package com.example.toomanycoolgames.ui.home
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import com.example.toomanycoolgames.data.IGDBRepository
+import com.example.toomanycoolgames.data.Result
+import proto.Game
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(
+    private val igdbRepository: IGDBRepository = IGDBRepository()
+) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+    val searchResults: LiveData<Result<List<Game>>> = liveData {
+        emit(igdbRepository.getSearchResults("Bowser"))
     }
-    val text: LiveData<String> = _text
 }
