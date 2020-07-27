@@ -9,6 +9,15 @@
         android:id="@+id/navigation_home"
         android:name="com.example.toomanycoolgames.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/home_fragment" />
+        tools:layout="@layout/home_fragment">
+        <action
+            android:id="@+id/action_navigation_home_to_infoActivity"
+            app:destination="@id/infoActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/infoActivity"
+        android:name="com.example.toomanycoolgames.ui.info.InfoActivity"
+        android:label="@string/title_activity_info"
+        tools:layout="@layout/activity_info" />
 
 </navigation>

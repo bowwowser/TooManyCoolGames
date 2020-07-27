@@ -4,6 +4,7 @@ import ImageSize
 import ImageType
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.toomanycoolgames.databinding.ItemGameBinding
@@ -35,6 +36,10 @@ class GamesListAdapter(private val games: List<Game>) :
             Glide.with(gameBinding.root.context)
                 .load(imageBuilder(game.cover.imageId, ImageSize.COVER_BIG, ImageType.PNG))
                 .into(gameBinding.gameCover)
+            gameBinding.gameItem.setOnClickListener { view ->
+                view.findNavController()
+                    .navigate(HomeFragmentDirections.actionNavigationHomeToInfoActivity())
+            }
         }
     }
 }
