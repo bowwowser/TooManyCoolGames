@@ -11,13 +11,18 @@
         android:label="@string/title_home"
         tools:layout="@layout/home_fragment">
         <action
-            android:id="@+id/action_navigation_home_to_infoActivity"
+            android:id="@+id/viewGameInfo"
             app:destination="@id/infoActivity" />
     </fragment>
     <activity
         android:id="@+id/infoActivity"
         android:name="com.example.toomanycoolgames.ui.info.InfoActivity"
         android:label="@string/title_activity_info"
-        tools:layout="@layout/activity_info" />
+        tools:layout="@layout/activity_info">
+        <argument
+            android:name="gameId"
+            android:defaultValue="-1L"
+            app:argType="long" />
+    </activity>
 
 </navigation>
