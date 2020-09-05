@@ -31,14 +31,16 @@ class GamesListAdapter(private val games: List<Game>) :
     ) : RecyclerView.ViewHolder(gameBinding.root) {
 
         fun bind(game: Game) {
-            gameBinding.gameName.text = game.name
+            gameBinding.apply {
+                gameName.text = game.name
 
-            Glide.with(gameBinding.root.context)
-                .load(imageBuilder(game.cover.imageId, ImageSize.COVER_BIG, ImageType.PNG))
-                .into(gameBinding.gameCover)
-            gameBinding.gameItem.setOnClickListener { view ->
-                view.findNavController()
-                    .navigate(HomeFragmentDirections.actionNavigationHomeToInfoActivity())
+                Glide.with(root.context)
+                    .load(imageBuilder(game.cover.imageId, ImageSize.COVER_BIG, ImageType.PNG))
+                    .into(gameCover)
+
+                gameItem.setOnClickListener { view ->
+                    view.findNavController().navigate(HomeFragmentDirections.viewGameInfo(game.id))
+                }
             }
         }
     }
