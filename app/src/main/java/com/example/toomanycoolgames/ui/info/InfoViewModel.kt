@@ -1,19 +1,28 @@
 package com.example.toomanycoolgames.ui.info
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import com.example.toomanycoolgames.data.IGDBRepository
-import com.example.toomanycoolgames.data.Result
-import proto.Game
+import android.app.Application
+import androidx.lifecycle.*
+import com.example.toomanycoolgames.TMKGApplication
+import com.example.toomanycoolgames.data.room.TMKGGame
+import kotlinx.coroutines.launch
 
 class InfoViewModel(
+    application: Application,
     state: SavedStateHandle
-) : ViewModel() {
-    private val gameRepository = IGDBRepository()
+) : AndroidViewModel(application) {
+
+    private val repository = (application as TMKGApplication).repository
     private val gameId: Long = state["gameId"] ?: throw IllegalArgumentException("Missing game id")
-    val gameInfo: LiveData<Result<Game>> = liveData {
-        emit(gameRepository.getGameInfo(gameId))
+
+    val gameInfo: LiveData<TMKGGame> = liveData {
+        emitSource(repository.getGameInfo(gameId))
+    }
+
+    fun onTrackButtonPressed() = viewModelScope.launch {
+//        TODO null fix
+        gameInfo.value?.let { game ->
+            val isNowTracked = game.isTracked.not()
+            repository.changeGameTrackStatus(gameId, isNowTracked)
+        }
     }
 }

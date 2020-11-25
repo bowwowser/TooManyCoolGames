@@ -98,4 +98,6 @@
     <string name="infoTrackButtonLabel">Track?</string>
     <string name="formatErrorWithMessage">Error!\n%1$s</string>
     <string name="cdGameCover">Game cover</string>
+    <string name="contentdesc_igdbGameCover">IGDB game cover</string>
+    <string name="contentdesc_fabTrackGame">Track this game</string>
 </resources>

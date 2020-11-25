@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
@@ -31,6 +32,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
 
     lintOptions {
@@ -42,6 +44,10 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
     def lifecycle_version = "2.2.0"
     def navigation_version = "2.3.0"
     def glide_version = "4.11.0"
@@ -62,12 +68,14 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation "androidx.fragment:fragment-ktx:1.2.5"
-    implementation 'com.github.husnjak:IGDB-API-JVM:0.7'
+    implementation 'com.github.husnjak:IGDB-API-JVM:1.0.1'
+    implementation 'com.google.protobuf:protobuf-java:3.13.0'
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata:$room_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
 
     implementation "com.github.bumptech.glide:glide:$glide_version"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
 }
