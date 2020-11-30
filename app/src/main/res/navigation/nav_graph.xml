@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
-
+    app:startDestination="@id/bottomnav_home">
     <fragment
-        android:id="@+id/navigation_home"
+        android:id="@+id/bottomnav_home"
         android:name="com.example.toomanycoolgames.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/home_fragment">
+        android:label="HomeFragment">
         <action
-            android:id="@+id/viewGameInfo"
-            app:destination="@id/infoActivity" />
+            android:id="@+id/viewTrackedGameInfo"
+            app:destination="@id/infoFragment" />
     </fragment>
-    <activity
-        android:id="@+id/infoActivity"
-        android:name="com.example.toomanycoolgames.ui.info.InfoActivity"
-        android:label="@string/title_activity_info"
-        tools:layout="@layout/activity_info">
+    <fragment
+        android:id="@+id/bottomnav_search"
+        android:name="com.example.toomanycoolgames.ui.search.SearchFragment"
+        android:label="SearchFragment">
+        <action
+            android:id="@+id/viewSearchInfo"
+            app:destination="@id/infoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/infoFragment"
+        android:name="com.example.toomanycoolgames.ui.info.InfoFragment"
+        android:label="InfoFragment">
         <argument
             android:name="gameId"
             android:defaultValue="-1L"
             app:argType="long" />
-    </activity>
-
+    </fragment>
 </navigation>

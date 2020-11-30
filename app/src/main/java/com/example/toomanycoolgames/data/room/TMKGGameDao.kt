@@ -5,11 +5,15 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TMKGGameDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun cacheGameInfo(game: TMKGGame)
+
+    @Query("SELECT * FROM TMKGGame WHERE is_tracked = 1")
+    fun getAllTrackedGames(): Flow<List<TMKGGame>>
 
     @Query("SELECT EXISTS(SELECT * FROM TMKGGame WHERE igdb_id = :igdbId)")
     suspend fun isGameInfoCached(igdbId: Long): Boolean

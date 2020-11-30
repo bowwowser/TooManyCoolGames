@@ -38,6 +38,8 @@ class GameRepository(private val tmkgGameDao: TMKGGameDao) {
         IGDBWrapper.setCredentials(IGDB_CLIENT_ID, IGDB_ACCESS_TOKEN)
     }
 
+    val allTrackedGames = tmkgGameDao.getAllTrackedGames()
+
     /**
      * Get search results for a query string.
      */
