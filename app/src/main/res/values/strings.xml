@@ -100,4 +100,5 @@
     <string name="cdGameCover">Game cover</string>
     <string name="contentdesc_igdbGameCover">IGDB game cover</string>
     <string name="contentdesc_fabTrackGame">Track this game</string>
+    <string name="title_search">Search</string>
 </resources>

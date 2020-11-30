@@ -12,10 +12,9 @@ import com.bumptech.glide.Glide
 import com.example.toomanycoolgames.R
 import com.example.toomanycoolgames.data.room.TMKGGame
 import com.example.toomanycoolgames.databinding.ItemGameBinding
-import proto.Game
 
-class GamesListAdapter(private val games: List<Game>) :
-    ListAdapter<TMKGGame, GamesListAdapter.GameHolder>(GameComparator()) {
+class TMKGGameListAdapter(private val games: List<TMKGGame>) :
+    ListAdapter<TMKGGame, TMKGGameListAdapter.GameHolder>(GameComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameHolder {
         val gameBinding =
@@ -33,7 +32,7 @@ class GamesListAdapter(private val games: List<Game>) :
         private val gameBinding: ItemGameBinding
     ) : RecyclerView.ViewHolder(gameBinding.root) {
 
-        fun bind(game: Game) {
+        fun bind(game: TMKGGame) {
             gameBinding.apply {
                 gameName.text = game.name
 
@@ -41,8 +40,8 @@ class GamesListAdapter(private val games: List<Game>) :
                 // avoids errors, but probs more idiomatic way to handle this
                 Glide.with(root.context)
                     .load(
-                        if (game.cover.imageId.isNullOrBlank()) null else imageBuilder(
-                            game.cover.imageId,
+                        if (game.coverId.isBlank()) null else imageBuilder(
+                            game.coverId,
                             ImageSize.COVER_BIG
                         )
                     )
@@ -50,7 +49,8 @@ class GamesListAdapter(private val games: List<Game>) :
                     .into(gameCover)
 
                 gameItem.setOnClickListener { view ->
-                    view.findNavController().navigate(HomeFragmentDirections.viewGameInfo(game.id))
+                    view.findNavController()
+                        .navigate(HomeFragmentDirections.viewTrackedGameInfo(game.igdbId))
                 }
             }
         }
