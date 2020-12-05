@@ -1,19 +1,22 @@
 package com.example.toomanycoolgames.ui.search
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
 import com.example.toomanycoolgames.data.GameRepository
 import com.example.toomanycoolgames.data.Result
+import kotlinx.coroutines.launch
 import proto.Game
+
+typealias IGDBResult = Result<List<Game>>
 
 class SearchViewModel(
     private val gameRepository: GameRepository
 ) : ViewModel() {
 
-    val searchResults: LiveData<Result<List<Game>>> = liveData {
-        emit(gameRepository.searchIgdbForGames("Hades"))
+    private var _searchResults = MutableLiveData<IGDBResult>()
+    val searchResults: LiveData<IGDBResult> = _searchResults
+
+    fun searchForGames(query: String) = viewModelScope.launch {
+        _searchResults.value = gameRepository.searchIgdbForGames(query)
     }
 }
 
