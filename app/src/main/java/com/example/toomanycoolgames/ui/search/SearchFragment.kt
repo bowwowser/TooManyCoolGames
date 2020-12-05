@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,21 +26,39 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = SearchFragmentBinding.inflate(inflater, container, false)
 
         viewModel.searchResults.observe(viewLifecycleOwner, { results ->
-            binding.progressGamesList.visibility = View.GONE
             when (results) {
-                is Result.Success<List<Game>> -> initializeViews(results.data)
+                is Result.Success -> updateResults(results.data)
                 is Result.Error -> showError(results.exception)
             }
+            binding.progressGamesList.visibility = View.GONE
         })
+
+        binding.apply {
+            // TODO improve search logic
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    currentGames.adapter = null
+                    searchView.clearFocus()
+                    if (query == null) {
+                        return false
+                    }
+                    progressGamesList.visibility = View.VISIBLE
+                    viewModel.searchForGames(query)
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean = false
+            })
+        }
 
         return binding.root
     }
 
-    private fun initializeViews(searchResults: List<Game>) {
+    private fun updateResults(searchResults: List<Game>) {
         binding.currentGames.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
