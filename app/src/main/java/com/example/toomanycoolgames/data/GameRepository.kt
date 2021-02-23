@@ -12,6 +12,7 @@ import com.example.toomanycoolgames.logError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import proto.Game
+import javax.inject.Inject
 
 sealed class Result<out R> {
     data class Success<out T>(val data: T) : Result<T>()
@@ -29,7 +30,9 @@ enum class Fields(val value: String) {
     }
 }
 
-class GameRepository(private val tmkgGameDao: TMKGGameDao) {
+class GameRepository @Inject constructor(
+    private val tmkgGameDao: TMKGGameDao
+) {
 
     /**
      * Initialize wrapper for IGDB API calls.

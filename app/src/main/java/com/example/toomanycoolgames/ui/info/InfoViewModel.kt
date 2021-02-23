@@ -1,17 +1,18 @@
 package com.example.toomanycoolgames.ui.info
 
-import android.app.Application
 import androidx.lifecycle.*
-import com.example.toomanycoolgames.TMKGApplication
+import com.example.toomanycoolgames.data.GameRepository
 import com.example.toomanycoolgames.data.room.TMKGGame
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class InfoViewModel(
-    application: Application,
+@HiltViewModel
+class InfoViewModel @Inject constructor(
+    private val repository: GameRepository,
     state: SavedStateHandle
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
-    private val repository = (application as TMKGApplication).repository
     private val gameId: Long = state["gameId"] ?: throw IllegalArgumentException("Missing game id")
 
     val gameInfo: LiveData<TMKGGame> = liveData {

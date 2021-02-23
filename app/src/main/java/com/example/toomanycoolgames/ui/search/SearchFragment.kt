@@ -9,18 +9,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toomanycoolgames.R
-import com.example.toomanycoolgames.TMKGApplication
 import com.example.toomanycoolgames.data.Result
 import com.example.toomanycoolgames.databinding.SearchFragmentBinding
+import dagger.hilt.android.AndroidEntryPoint
 import proto.Game
 
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
 
     private var _binding: SearchFragmentBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: SearchViewModel by viewModels {
-        SearchViewModelFactory((activity?.application as TMKGApplication).repository)
-    }
+    private val viewModel: SearchViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
