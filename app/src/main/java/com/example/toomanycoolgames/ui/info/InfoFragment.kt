@@ -13,7 +13,9 @@ import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
 import com.bumptech.glide.Glide
 import com.example.toomanycoolgames.databinding.InfoActivityFunBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class InfoFragment : Fragment() {
 
     private var _binding: InfoActivityFunBinding? = null

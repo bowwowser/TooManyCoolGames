@@ -1,14 +1,20 @@
 package com.example.toomanycoolgames.ui.search
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.toomanycoolgames.data.GameRepository
 import com.example.toomanycoolgames.data.Result
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import proto.Game
+import javax.inject.Inject
 
 typealias IGDBResult = Result<List<Game>>
 
-class SearchViewModel(
+@HiltViewModel
+class SearchViewModel @Inject constructor(
     private val gameRepository: GameRepository
 ) : ViewModel() {
 
@@ -17,16 +23,5 @@ class SearchViewModel(
 
     fun searchForGames(query: String) = viewModelScope.launch {
         _searchResults.value = gameRepository.searchIgdbForGames(query)
-    }
-}
-
-class SearchViewModelFactory(private val gameRepository: GameRepository) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return SearchViewModel(gameRepository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

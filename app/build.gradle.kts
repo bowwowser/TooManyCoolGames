@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -49,11 +50,19 @@ dependencies {
     val glideVersion = "4.12.0"
 
     // Core
-    implementation("androidx.appcompat:appcompat:1.2.0")
+    implementation("androidx.appcompat:appcompat:1.3.0-beta01")
     implementation("androidx.core:core-ktx:1.3.2")
     implementation("androidx.fragment:fragment-ktx:1.3.0")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.extra.get("kotlinVersion")}")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.30")
+
+    // DI
+    val hiltVersion = "2.32-alpha"
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-compiler:$hiltVersion")
+    // TODO figure out how to avoid overeager build error w/ below
+//    implementation("com.google.dagger:hilt-android:${rootProject.extra.get("hilt_version")}")
+//    kapt("com.google.dagger:hilt-compiler:${rootProject.extra.get("hilt_version")}")
 
     // Data
     kapt("androidx.room:room-compiler:$roomVersion")
@@ -69,8 +78,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
     // TODO check later if this is synced up again
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:${rootProject.extra.get("navigationVersion")}")
-    implementation("androidx.navigation:navigation-ui-ktx:${rootProject.extra.get("navigationVersion")}")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.3.3")
+    implementation("androidx.navigation:navigation-ui-ktx:2.3.3")
     implementation("androidx.recyclerview:recyclerview:1.1.0")
 
     implementation("com.github.bumptech.glide:glide:$glideVersion")
@@ -78,11 +87,9 @@ dependencies {
     implementation("com.google.android.material:material:1.3.0")
 
     // Testing
-    testImplementation("junit:junit:4.12")
+    testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
 
-
-//    implementation(fileTree(org.gradle.internal.impldep.bsh.commands.dir: "libs", include: ["*.jar"]))
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 }
