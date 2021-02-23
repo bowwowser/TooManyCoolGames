@@ -14,9 +14,9 @@ import kotlinx.coroutines.withContext
 import proto.Game
 import javax.inject.Inject
 
-sealed class Result<out R> {
-    data class Success<out T>(val data: T) : Result<T>()
-    data class Error(val exception: Exception) : Result<Nothing>()
+sealed class TMKGResult<out R> {
+    data class Success<out T>(val data: T) : TMKGResult<T>()
+    data class Error(val exception: RequestException) : TMKGResult<Nothing>()
 }
 
 enum class Fields(val value: String) {
@@ -46,14 +46,14 @@ class GameRepository @Inject constructor(
     /**
      * Get search results for a query string.
      */
-    suspend fun searchIgdbForGames(query: String): Result<List<Game>> =
+    suspend fun searchIgdbForGames(query: String): TMKGResult<List<Game>> =
         withContext(Dispatchers.IO) {
             try {
                 val searchResult: List<Game> = IGDBWrapper.games(gameSearchQuery(query))
-                Result.Success(searchResult)
+                TMKGResult.Success(searchResult)
             } catch (e: RequestException) {
                 logError(e) { "Error fetching games for query \"$query\": ${e.message}" }
-                Result.Error(e)
+                TMKGResult.Error(e)
             }
         }
 

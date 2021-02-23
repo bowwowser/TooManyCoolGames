@@ -8,11 +8,13 @@ import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.api.igdb.exceptions.RequestException
 import com.example.toomanycoolgames.R
-import com.example.toomanycoolgames.data.Result
+import com.example.toomanycoolgames.data.TMKGResult
 import com.example.toomanycoolgames.databinding.SearchFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import proto.Game
+import java.util.*
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -30,13 +32,14 @@ class SearchFragment : Fragment() {
 
         viewModel.searchResults.observe(viewLifecycleOwner, { results ->
             when (results) {
-                is Result.Success -> updateResults(results.data)
-                is Result.Error -> showError(results.exception)
+                is TMKGResult.Success -> updateResults(results.data)
+                is TMKGResult.Error -> showError(results.exception)
             }
             binding.progressGamesList.visibility = View.GONE
         })
 
         binding.apply {
+            searchView.queryHint = checkApiTokenFreshness()
             // TODO improve search logic
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
@@ -65,10 +68,22 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun showError(exception: Exception) {
+    private fun showError(exception: RequestException) {
         binding.textError.apply {
             visibility = View.VISIBLE
-            text = getString(R.string.formatErrorWithMessage, exception.message)
+            text = getString(R.string.formatErrorWithMessage, exception.statusCode.toString())
+        }
+    }
+
+    private fun checkApiTokenFreshness(): String {
+        val regeneratedDate = 1614066539L // REPLACE when regenerated
+        val expiresIn = 4890271L // REPLACE when regenerated
+        val currentMillis = Calendar.getInstance().timeInMillis
+
+        return if (regeneratedDate + expiresIn >= currentMillis) {
+            "API Key expired"
+        } else {
+            "Access Token expires in ${expiresIn / 86_400} days"
         }
     }
 }

@@ -71,6 +71,8 @@ dependencies {
 
     implementation("com.github.husnjak:IGDB-API-JVM:1.0.1")
     implementation("com.google.protobuf:protobuf-java:3.13.0")
+    implementation("com.github.kittinunf.result:result:4.0.0")
+    implementation("com.github.kittinunf.result:result-coroutines:4.0.0")
 
     // UI
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
