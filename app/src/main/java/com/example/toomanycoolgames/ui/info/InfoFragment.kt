@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.SavedStateViewModelFactory
-import androidx.navigation.fragment.navArgs
 import com.api.igdb.utils.ImageSize
 import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
@@ -20,16 +18,7 @@ class InfoFragment : Fragment() {
 
     private var _binding: InfoActivityFunBinding? = null
     private val binding get() = _binding!!
-    private val args: InfoFragmentArgs by navArgs()
-    private val infoViewModel: InfoViewModel by viewModels(
-        factoryProducer = {
-            SavedStateViewModelFactory(
-                requireActivity().application,
-                this,
-                args.toBundle()
-            )
-        }
-    )
+    private val infoViewModel: InfoViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
