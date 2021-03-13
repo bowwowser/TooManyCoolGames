@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
     <data>
-
         <variable
             name="viewModel"
-            type="com.example.toomanycoolgames.ui.info.InfoViewModel" />
+            type="com.example.toomanycoolgames.ui.info.InfoViewModel"
+            />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <TextView
             android:id="@+id/infoGameName"
@@ -23,23 +27,35 @@
             android:text="@{viewModel.gameInfo.name}"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="0dp"
-            tools:text="@string/app_name" />
+            tools:text="@string/app_name"
+            />
 
-        <TextView
-            android:id="@+id/infoGameSummary"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp"
-            android:text="@{viewModel.gameInfo.summary}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@android:color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <include
+            android:id="@+id/cardGameSummary"
+            layout="@layout/card_info_game_summary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/cardGameReleases"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/infoGameName"
-            tools:text="@string/large_text" />
+            bind:viewModel="@{viewModel}"
+            />
+
+        <include
+            android:id="@+id/cardGameReleases"
+            layout="@layout/card_info_game_releases"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardGameSummary"
+            />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabTrackGame"
@@ -55,7 +71,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompatOff="@{@drawable/ic_baseline_bookmark_border_24}"
-            app:srcCompatOn="@{@drawable/ic_baseline_bookmark_24}" />
+            app:srcCompatOn="@{@drawable/ic_baseline_bookmark_24}"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

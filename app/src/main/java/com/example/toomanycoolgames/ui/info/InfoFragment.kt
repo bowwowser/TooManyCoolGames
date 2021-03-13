@@ -1,6 +1,7 @@
 package com.example.toomanycoolgames.ui.info
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +38,18 @@ class InfoFragment : Fragment() {
                     .load(imageBuilder(game.coverId, ImageSize.HD, ImageType.PNG))
                     .into(infoGameCover)
                 infoProgressLoad.visibility = View.INVISIBLE
+            }
+        })
+
+        infoViewModel.isExpanded.observe(requireActivity(), { isExpanded ->
+            binding.infobox.cardGameSummary.infoGameSummary.apply {
+                if (isExpanded) {
+                    maxLines = Int.MAX_VALUE
+                    ellipsize = null
+                } else {
+                    maxLines = 5
+                    ellipsize = TextUtils.TruncateAt.END
+                }
             }
         })
 

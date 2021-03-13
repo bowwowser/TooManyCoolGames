@@ -1,12 +1,12 @@
 package com.example.toomanycoolgames
 
 import android.graphics.drawable.Drawable
+import android.widget.ImageButton
 import androidx.databinding.BindingAdapter
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 @BindingAdapter("srcCompatOn", "srcCompatOff", "customIsOn", requireAll = false)
 fun setOnOffSrcCompat(
-    view: FloatingActionButton,
+    view: ImageButton,
     onRes: Drawable,
     offRes: Drawable,
     isOn: Boolean

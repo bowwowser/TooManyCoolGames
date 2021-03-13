@@ -19,11 +19,18 @@ class InfoViewModel @Inject constructor(
         emitSource(repository.getGameInfo(gameId))
     }
 
+    private var _isExpanded = MutableLiveData<Boolean>(false)
+    val isExpanded: LiveData<Boolean> = _isExpanded
+
     fun onTrackButtonPressed() = viewModelScope.launch {
 //        TODO null fix
         gameInfo.value?.let { game ->
             val isNowTracked = game.isTracked.not()
             repository.changeGameTrackStatus(gameId, isNowTracked)
         }
+    }
+
+    fun onSummaryExpandPressed() {
+        _isExpanded.value = isExpanded.value?.not()
     }
 }
