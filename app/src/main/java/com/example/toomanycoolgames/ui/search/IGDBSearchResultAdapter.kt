@@ -63,7 +63,7 @@ class IGDBSearchResultAdapter(private val games: List<Game>) :
         }
 
         override fun areContentsTheSame(oldItem: TMKGGame, newItem: TMKGGame): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.gameId == newItem.gameId
         }
     }
 }

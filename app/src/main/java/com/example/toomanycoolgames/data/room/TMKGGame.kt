@@ -4,7 +4,7 @@ import androidx.room.*
 
 @Entity
 data class TMKGGame(
-    @PrimaryKey(autoGenerate = true) val id: Long,
+    @PrimaryKey(autoGenerate = true) val gameId: Long,
     @ColumnInfo(name = "is_tracked") val isTracked: Boolean,
     @ColumnInfo(name = "igdb_id") val igdbId: Long,
     @ColumnInfo(name = "name") val name: String,
@@ -16,16 +16,16 @@ data class TMKGGame(
 data class TMKGGameWithReleaseDates(
     @Embedded val game: TMKGGame,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "game_id"
+        parentColumn = "gameId",
+        entityColumn = "game_fk"
     )
     val releaseDates: List<TMKGReleaseDate>
 )
 
 @Entity
 data class TMKGReleaseDate(
-    @PrimaryKey(autoGenerate = true) val id: Long,
-    @ColumnInfo(name = "game_id") val gameId: Long,
+    @PrimaryKey(autoGenerate = true) val rdId: Long,
+    @ColumnInfo(name = "game_fk") val gameFk: Long,
     @ColumnInfo(name = "platform_name") val platformName: String,
     @ColumnInfo(name = "release_date_human") val releaseDateHuman: String, // millis
 //    @ColumnInfo(name = "release_date") val releaseDate: Long, // millis

@@ -62,7 +62,7 @@ class TMKGGameListAdapter(private val games: List<TMKGGame>) :
         }
 
         override fun areContentsTheSame(oldItem: TMKGGame, newItem: TMKGGame): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.gameId == newItem.gameId
         }
     }
 }
