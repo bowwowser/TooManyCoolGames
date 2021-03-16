@@ -14,6 +14,7 @@ import com.example.toomanycoolgames.logError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import proto.Game
+import proto.ReleaseDate
 import javax.inject.Inject
 
 sealed class TMKGResult<out R> {
@@ -115,19 +116,28 @@ class GameRepository @Inject constructor(
 
         searchResult.first { game ->
             val tmkgGame = TMKGGame(
-                id = 0,
+                gameId = 0,
                 isTracked = false,
                 game.id,
                 game.name,
                 game.cover.imageId,
                 game.summary
             )
-            tmkgGameDao.cacheGameInfo(tmkgGame)
-            game.releaseDatesList.map { releaseDate ->
-                TMKGReleaseDate(id = 0, game.id, releaseDate.platform.name, releaseDate.human)
-            }.forEach { tmkgGameDao.cacheReleaseDate(it) }
+            val gameDbId = tmkgGameDao.cacheGameInfo(tmkgGame)
+            cacheReleaseDates(game.releaseDatesList, gameDbId)
             return@withContext
         }
+    }
+
+    private suspend fun cacheReleaseDates(releaseDates: List<ReleaseDate>, gameDbId: Long) {
+        releaseDates.map { releaseDate ->
+            TMKGReleaseDate(
+                rdId = 0,
+                gameDbId,
+                releaseDate.platform.name,
+                releaseDate.human
+            )
+        }.forEach { tmkgGameDao.cacheReleaseDate(it) }
     }
 
     companion object {

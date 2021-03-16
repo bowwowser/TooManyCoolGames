@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TMKGGameDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun cacheGameInfo(game: TMKGGame)
+    suspend fun cacheGameInfo(game: TMKGGame): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun cacheReleaseDate(game: TMKGReleaseDate)
@@ -20,8 +20,8 @@ interface TMKGGameDao {
         """
         SELECT *
         FROM TMKGGame g
-        LEFT OUTER JOIN TMKGReleaseDate r
-        ON g.id = r.game_id
+        INNER JOIN TMKGReleaseDate r
+        ON g.gameId = r.game_fk
         WHERE g.igdb_id = :igdbId
     """
     )
