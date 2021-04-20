@@ -78,12 +78,13 @@ class SearchFragment : Fragment() {
     private fun checkApiTokenFreshness(): String {
         val regeneratedDate = 1614066539L // REPLACE when regenerated
         val expiresIn = 4890271L // REPLACE when regenerated
+        val expireDate = (regeneratedDate + expiresIn) * 1000
         val currentMillis = Calendar.getInstance().timeInMillis
 
-        return if (regeneratedDate + expiresIn >= currentMillis) {
+        return if (currentMillis >= expireDate) {
             "API Key expired"
         } else {
-            "Access Token expires in ${expiresIn / 86_400} days"
+            "Access Token expires in ${(expireDate - currentMillis) / 86_400_000} days"
         }
     }
 }

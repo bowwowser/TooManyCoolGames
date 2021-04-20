@@ -32,6 +32,7 @@ class RepositoryModule {
     @Provides
     fun providesGameDatabase(@ApplicationContext context: Context): TMKGDatabase {
         return Room.databaseBuilder(context, TMKGDatabase::class.java, "games")
+            .fallbackToDestructiveMigration()
             .build()
     }
 }
