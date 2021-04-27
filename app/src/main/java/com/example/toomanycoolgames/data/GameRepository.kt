@@ -135,7 +135,8 @@ class GameRepository @Inject constructor(
                 rdId = 0,
                 gameDbId,
                 releaseDate.platform.name,
-                releaseDate.human
+                releaseDate.human,
+                releaseDate.region.name
             )
         }.forEach { tmkgGameDao.cacheReleaseDate(it) }
     }
