@@ -3,6 +3,7 @@ package com.example.toomanycoolgames.ui.info
 import androidx.lifecycle.*
 import com.example.toomanycoolgames.data.GameRepository
 import com.example.toomanycoolgames.data.room.TMKGGameWithReleaseDates
+import com.example.toomanycoolgames.logDebug
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -12,9 +13,6 @@ class InfoViewModel @Inject constructor(
     private val repository: GameRepository,
     state: SavedStateHandle
 ) : ViewModel() {
-
-    private val debounceInterval = 500L
-    private var lastEditTime = 0L
 
     private val gameId: Long = state["gameId"] ?: throw IllegalArgumentException("Missing game id")
 
@@ -36,16 +34,21 @@ class InfoViewModel @Inject constructor(
         _isExpanded.value = isExpanded.value?.not()
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun onNotesUpdated(
-        notes: CharSequence,
-        start: Int, before: Int, count: Int
+        notes: CharSequence
     ) = viewModelScope.launch {
-        // TODO extract debounce logic?
-        val time = System.currentTimeMillis()
-        if (time - lastEditTime >= debounceInterval) {
-            lastEditTime = time
-            repository.updateGameNotes(gameId, notes.toString())
+        // TODO add some proper debounce logic
+        logDebug { "Updating notes (${notes.subSequence(0, minOf(notes.length, 15))}...)" }
+        repository.updateGameNotes(gameId, notes.toString())
+    }
+
+    fun onStatusSelected(
+        selectedStatusPosition: Int
+    ) = viewModelScope.launch {
+        logDebug { "Status selected ($selectedStatusPosition)" }
+        if (selectedStatusPosition != 0
+            && selectedStatusPosition != gameInfo.value?.game?.playStatusPosition) {
+            repository.changeGamePlayStatus(gameId, selectedStatusPosition)
         }
     }
 }

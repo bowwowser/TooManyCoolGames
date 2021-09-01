@@ -34,12 +34,20 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/notes_hint"
+                android:hint= "@string/notes_hint"
                 android:minLines="3"
                 android:gravity="top"
                 android:importantForAutofill="no"
                 android:text="@{viewModel.gameInfo.game.notes}"
-                android:onTextChanged="@{(s, start, before, count) -> viewModel.onNotesUpdated(s, start, before, count)}"
+                android:onTextChanged="@{(s, _, before, count) -> viewModel.onNotesUpdated(s)}"
+                />
+
+            <Spinner
+                android:id="@+id/spinnerStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onItemSelected="@{(p, v, position, id) -> viewModel.onStatusSelected(position)}"
+                android:minHeight="48dp"
                 />
 
         </LinearLayout>
