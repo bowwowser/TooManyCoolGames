@@ -27,7 +27,8 @@ enum class Fields(val value: String) {
     NAME("name"),
     COVER_IMAGE_ID("cover.image_id"),
     RELEASE_DATE_HUMAN("release_dates.human"),
-    RELEASE_DATE_PLATFORM_NAME("release_dates.platform.name")
+    RELEASE_DATE_PLATFORM_NAME("release_dates.platform.name"),
+    RELEASE_DATE_REGION("release_dates.region")
     ;
 
     companion object {
@@ -37,7 +38,8 @@ enum class Fields(val value: String) {
                 ALL.value,
                 COVER_IMAGE_ID.value,
                 RELEASE_DATE_HUMAN.value,
-                RELEASE_DATE_PLATFORM_NAME.value
+                RELEASE_DATE_PLATFORM_NAME.value,
+                RELEASE_DATE_REGION.value
             ).joinToString()
         val gameSearchFields get() = arrayOf(NAME.value, COVER_IMAGE_ID.value).joinToString()
     }
@@ -136,7 +138,7 @@ class GameRepository @Inject constructor(
                 gameDbId,
                 releaseDate.platform.name,
                 releaseDate.human,
-                releaseDate.region.name
+                releaseDate.region.ordinal
             )
         }.forEach { tmkgGameDao.cacheReleaseDate(it) }
     }
