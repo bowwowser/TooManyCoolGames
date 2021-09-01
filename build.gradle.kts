@@ -3,13 +3,13 @@
 buildscript {
     val kotlinVersion by rootProject.extra("1.4.31")
     val navigationVersion by rootProject.extra("2.3.3")
-    val hiltVersion by rootProject.extra("2.32-alpha")
+    val hiltVersion by rootProject.extra("2.38.1")
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.2.0-rc01")
+        classpath("com.android.tools.build:gradle:7.0.1")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion")
         classpath("com.google.dagger:hilt-android-gradle-plugin:$hiltVersion")

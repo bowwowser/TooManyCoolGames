@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 30
     defaultConfig {
         applicationId = "com.example.toomanycoolgames"
-        minSdkVersion(24)
-        targetSdkVersion(30)
+        minSdk = 24
+        targetSdk = 30
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -39,7 +39,7 @@ android {
         dataBinding = true
     }
 
-    lintOptions {
+    lint {
         disable("ObsoleteSdkInt", "UnusedResources")
     }
 }
@@ -57,7 +57,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.31")
 
     // DI
-    val hiltVersion = "2.32-alpha"
+    val hiltVersion = "2.38.1"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     kapt("com.google.dagger:hilt-compiler:$hiltVersion")
     // TODO figure out how to avoid overeager build error w/ below
@@ -69,7 +69,7 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
 
-    implementation("com.github.husnjak:IGDB-API-JVM:1.0.1")
+    implementation("com.github.husnjak:IGDB-API-JVM:1.0.2")
     implementation("com.google.protobuf:protobuf-java:3.13.0")
     implementation("com.github.kittinunf.result:result:4.0.0")
     implementation("com.github.kittinunf.result:result-coroutines:4.0.0")
