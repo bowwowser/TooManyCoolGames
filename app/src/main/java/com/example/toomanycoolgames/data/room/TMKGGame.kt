@@ -28,6 +28,6 @@ data class TMKGReleaseDate(
     @ColumnInfo(name = "game_fk") val gameFk: Long,
     @ColumnInfo(name = "platform_name") val platformName: String,
     @ColumnInfo(name = "release_date_human") val releaseDateHuman: String, // millis
-    @ColumnInfo(name = "region_name") val regionName: String,
+    @ColumnInfo(name = "region_ordinal") val regionOrdinal: Int,
 //    @ColumnInfo(name = "release_date") val releaseDate: Long, // millis
 )
