@@ -103,6 +103,16 @@ class GameRepository @Inject constructor(
     }
 
     /**
+     * Updates the notes for the provided game id.
+     *
+     * @param gameId IGDB game id
+     */
+    @WorkerThread
+    suspend fun updateGameNotes(gameId: Long, notes: String) {
+        tmkgGameDao.updateGameNotes(gameId, notes)
+    }
+
+    /**
      * Fetch and cache game info from IGDB.
      *
      * @param igdbId IGDB game id
@@ -123,7 +133,8 @@ class GameRepository @Inject constructor(
                 game.id,
                 game.name,
                 game.cover.imageId,
-                game.summary
+                game.summary,
+                notes = ""
             )
             val gameDbId = tmkgGameDao.cacheGameInfo(tmkgGame)
             cacheReleaseDates(game.releaseDatesList, gameDbId)

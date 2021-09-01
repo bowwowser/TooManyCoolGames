@@ -35,6 +35,20 @@
             />
 
         <include
+            android:id="@+id/cardGameNotes"
+            layout="@layout/card_info_game_notes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/cardGameSummary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/infoGameName"
+            bind:viewModel="@{viewModel}"
+            />
+
+
+        <include
             android:id="@+id/cardGameSummary"
             layout="@layout/card_info_game_summary"
             android:layout_width="0dp"
@@ -43,7 +57,7 @@
             app:layout_constraintBottom_toTopOf="@+id/cardGameReleases"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/infoGameName"
+            app:layout_constraintTop_toBottomOf="@+id/cardGameNotes"
             bind:viewModel="@{viewModel}"
             />
 

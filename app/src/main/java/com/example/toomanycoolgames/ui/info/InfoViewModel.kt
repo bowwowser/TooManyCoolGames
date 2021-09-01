@@ -13,14 +13,16 @@ class InfoViewModel @Inject constructor(
     state: SavedStateHandle
 ) : ViewModel() {
 
-    private val gameId: Long = state["gameId"] ?: throw IllegalArgumentException("Missing game id")
+    private val debounceInterval = 500L
+    private var lastEditTime = 0L
 
-    val gameInfo: LiveData<TMKGGameWithReleaseDates> = liveData {
-        emitSource(repository.getGameInfoWithReleaseDates(gameId))
-    }
+    private val gameId: Long = state["gameId"] ?: throw IllegalArgumentException("Missing game id")
 
     private var _isExpanded = MutableLiveData<Boolean>(false)
     val isExpanded: LiveData<Boolean> = _isExpanded
+    val gameInfo: LiveData<TMKGGameWithReleaseDates> = liveData {
+        emitSource(repository.getGameInfoWithReleaseDates(gameId))
+    }
 
     fun onTrackButtonPressed() = viewModelScope.launch {
 //        TODO null fix
@@ -32,5 +34,18 @@ class InfoViewModel @Inject constructor(
 
     fun onSummaryExpandPressed() {
         _isExpanded.value = isExpanded.value?.not()
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun onNotesUpdated(
+        notes: CharSequence,
+        start: Int, before: Int, count: Int
+    ) = viewModelScope.launch {
+        // TODO extract debounce logic?
+        val time = System.currentTimeMillis()
+        if (time - lastEditTime >= debounceInterval) {
+            lastEditTime = time
+            repository.updateGameNotes(gameId, notes.toString())
+        }
     }
 }
