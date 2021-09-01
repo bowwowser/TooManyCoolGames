@@ -105,4 +105,6 @@
     <string name="expand_game_summary">Expand game summary</string>
     <string name="summary">Summary</string>
     <string name="releases">Releases</string>
+    <string name="notes">Notes</string>
+    <string name="notes_hint">Add your notes here! ✏️</string>
 </resources>
