@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import com.api.igdb.utils.ImageSize
 import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
 import com.bumptech.glide.Glide
+import com.example.toomanycoolgames.R
 import com.example.toomanycoolgames.data.room.TMKGGameWithReleaseDates
 import com.example.toomanycoolgames.databinding.InfoActivityFunBinding
 import com.example.toomanycoolgames.logDebug
@@ -23,6 +25,7 @@ class InfoFragment : Fragment() {
     private var _binding: InfoActivityFunBinding? = null
     private val binding get() = _binding!!
     private val infoViewModel: InfoViewModel by viewModels()
+    private lateinit var statusSpinnerAdapter: ArrayAdapter<CharSequence>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +36,14 @@ class InfoFragment : Fragment() {
         binding.apply {
             lifecycleOwner = this@InfoFragment
             viewModel = infoViewModel
+        }
+
+        statusSpinnerAdapter = ArrayAdapter.createFromResource(
+            requireActivity(),
+            R.array.play_status,
+            android.R.layout.simple_spinner_item
+        ).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         }
 
         infoViewModel.gameInfo.observe(requireActivity(), this::initializeViews)
@@ -66,6 +77,10 @@ class InfoFragment : Fragment() {
                 isNestedScrollingEnabled = false
                 layoutManager = LinearLayoutManager(context)
                 adapter = ReleaseDateAdapter(game.releaseDates)
+            }
+            binding.infobox.cardGameNotes.spinnerStatus.apply {
+                adapter = statusSpinnerAdapter
+                setSelection(game.game.playStatusPosition)
             }
         }
     }

@@ -103,6 +103,16 @@ class GameRepository @Inject constructor(
     }
 
     /**
+     * Changes the play status for the provided game id.
+     *
+     * @param gameId IGDB game id
+     */
+    @WorkerThread
+    suspend fun changeGamePlayStatus(gameId: Long, playStatusPosition: Int) {
+        tmkgGameDao.updateGamePlayStatus(gameId, playStatusPosition)
+    }
+
+    /**
      * Updates the notes for the provided game id.
      *
      * @param gameId IGDB game id
@@ -134,7 +144,8 @@ class GameRepository @Inject constructor(
                 game.name,
                 game.cover.imageId,
                 game.summary,
-                notes = ""
+                notes = "",
+                playStatusPosition = 0
             )
             val gameDbId = tmkgGameDao.cacheGameInfo(tmkgGame)
             cacheReleaseDates(game.releaseDatesList, gameDbId)

@@ -36,6 +36,9 @@ interface TMKGGameDao {
     @Query("UPDATE TMKGGame SET is_tracked = :isNowTracked WHERE igdb_id = :gameId")
     suspend fun updateGameTrackStatus(gameId: Long, isNowTracked: Boolean)
 
+    @Query("UPDATE TMKGGame SET play_status_position = :playStatusPosition WHERE igdb_id = :gameId")
+    suspend fun updateGamePlayStatus(gameId: Long, playStatusPosition: Int)
+
     @Query("UPDATE TMKGGame SET notes = :notes WHERE igdb_id = :gameId")
     suspend fun updateGameNotes(gameId: Long, notes: String)
 

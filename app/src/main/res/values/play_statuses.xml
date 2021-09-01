@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="play_status">
+        <item>Currently I am…</item>
+        <item>Playing 🎮</item>
+        <item>Replaying 🔁</item>
+        <item>100%-Completing 💯</item>
+        <item>Story-focused 📚</item>
+        <item>Waiting ⏰</item>
+    </string-array>
+</resources>

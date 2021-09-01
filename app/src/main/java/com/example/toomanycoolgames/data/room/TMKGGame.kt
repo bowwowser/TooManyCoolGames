@@ -10,7 +10,8 @@ data class TMKGGame(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "cover_id") val coverId: String,
     @ColumnInfo(name = "summary") val summary: String,
-    @ColumnInfo(name = "notes") val notes: String
+    @ColumnInfo(name = "notes") val notes: String,
+    @ColumnInfo(name = "play_status_position") val playStatusPosition: Int
 )
 
 data class TMKGGameWithReleaseDates(
@@ -29,5 +30,4 @@ data class TMKGReleaseDate(
     @ColumnInfo(name = "platform_name") val platformName: String,
     @ColumnInfo(name = "release_date_human") val releaseDateHuman: String, // millis
     @ColumnInfo(name = "region_ordinal") val regionOrdinal: Int,
-//    @ColumnInfo(name = "release_date") val releaseDate: Long, // millis
 )
