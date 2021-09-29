@@ -34,9 +34,7 @@ class InfoViewModel @Inject constructor(
         _isExpanded.value = isExpanded.value?.not()
     }
 
-    fun onNotesUpdated(
-        notes: CharSequence
-    ) = viewModelScope.launch {
+    fun onNotesUpdated(notes: CharSequence) = viewModelScope.launch {
         // TODO add some proper debounce logic
         logDebug { "Updating notes (${notes.subSequence(0, minOf(notes.length, 15))}...)" }
         repository.updateGameNotes(gameId, notes.toString())
@@ -47,7 +45,8 @@ class InfoViewModel @Inject constructor(
     ) = viewModelScope.launch {
         logDebug { "Status selected ($selectedStatusPosition)" }
         if (selectedStatusPosition != 0
-            && selectedStatusPosition != gameInfo.value?.game?.playStatusPosition) {
+            && selectedStatusPosition != gameInfo.value?.game?.playStatusPosition
+        ) {
             repository.changeGamePlayStatus(gameId, selectedStatusPosition)
         }
     }

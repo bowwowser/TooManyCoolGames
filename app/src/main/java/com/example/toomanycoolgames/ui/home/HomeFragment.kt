@@ -31,14 +31,12 @@ class HomeFragment : Fragment() {
     }
 
     // TODO: data binding?
-    private fun initializeViews(games: List<TMKGGame>) {
-        binding.apply {
-            progressGamesList.visibility = View.GONE
-            currentGames.apply {
-                setHasFixedSize(true)
-                layoutManager = LinearLayoutManager(context)
-                adapter = TMKGGameListAdapter(games)
-            }
+    private fun initializeViews(games: List<TMKGGame>) = binding.apply {
+        progressGamesList.visibility = View.GONE
+        currentGames.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+            adapter = TMKGGameListAdapter(games)
         }
     }
 }
