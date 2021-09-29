@@ -80,6 +80,7 @@ dependencies {
     val lifecycleVersion = "2.3.1"
     val navigationVersion = "2.3.5"
     val recyclerViewVersion = "1.2.1"
+    val viewPager2Version = "1.0.0"
     implementation("androidx.fragment:fragment-ktx:$fragmentVersion")
     implementation("androidx.constraintlayout:constraintlayout:$constraintLayoutVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
@@ -87,6 +88,7 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
     implementation("androidx.recyclerview:recyclerview:$recyclerViewVersion")
+    implementation("androidx.viewpager2:viewpager2:$viewPager2Version")
 
     val glideVersion = "4.12.0"
     val materialVersion = "1.4.0"

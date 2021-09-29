@@ -8,6 +8,7 @@ data class TMKGGame(
     @ColumnInfo(name = "is_tracked") val isTracked: Boolean,
     @ColumnInfo(name = "igdb_id") val igdbId: Long,
     @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "category") val category: Int,
     @ColumnInfo(name = "cover_id") val coverId: String,
     @ColumnInfo(name = "summary") val summary: String,
     @ColumnInfo(name = "notes") val notes: String,

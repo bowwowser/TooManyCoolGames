@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import proto.Game
 import proto.ReleaseDate
+import java.util.*
 import javax.inject.Inject
 
 sealed class TMKGResult<out R> {
@@ -25,6 +26,7 @@ sealed class TMKGResult<out R> {
 enum class Fields(val value: String) {
     ALL("*"),
     NAME("name"),
+    CATEGORY("category"),
     COVER_IMAGE_ID("cover.image_id"),
     RELEASE_DATE_HUMAN("release_dates.human"),
     RELEASE_DATE_PLATFORM_NAME("release_dates.platform.name"),
@@ -32,7 +34,12 @@ enum class Fields(val value: String) {
     ;
 
     companion object {
-        val gameInfoFields get() = arrayOf(ALL.value, COVER_IMAGE_ID.value).joinToString()
+        val gameInfoFields
+            get() = arrayOf(
+                ALL.value,
+                COVER_IMAGE_ID.value,
+                CATEGORY.value
+            ).joinToString()
         val gameWithReleaseDatesFields
             get() = arrayOf(
                 ALL.value,
@@ -41,7 +48,12 @@ enum class Fields(val value: String) {
                 RELEASE_DATE_PLATFORM_NAME.value,
                 RELEASE_DATE_REGION.value
             ).joinToString()
-        val gameSearchFields get() = arrayOf(NAME.value, COVER_IMAGE_ID.value).joinToString()
+        val gameSearchFields
+            get() = arrayOf(
+                NAME.value,
+                COVER_IMAGE_ID.value,
+                CATEGORY.value
+            ).joinToString()
     }
 }
 
@@ -142,6 +154,7 @@ class GameRepository @Inject constructor(
                 isTracked = false,
                 game.id,
                 game.name,
+                game.category.number,
                 game.cover.imageId,
                 game.summary,
                 notes = "",
@@ -185,3 +198,19 @@ class GameRepository @Inject constructor(
         }
     }
 }
+
+fun checkApiTokenFreshness(): String {
+    val regeneratedDate = 1629950006L // REPLACE when regenerated
+    val expiresIn = 5048552L // REPLACE when regenerated
+    val expireDate = (regeneratedDate + expiresIn) * 1000
+    val currentMillis = Calendar.getInstance().timeInMillis
+
+    return if (currentMillis >= expireDate) {
+        "API Key expired"
+    } else {
+        "Access Token expires in ${(expireDate - currentMillis) / 86_400_000} days"
+    }
+}
+
+// TODO reorganize
+val isMainGame: (Game) -> Boolean = { game -> game.category.number == 0 }
