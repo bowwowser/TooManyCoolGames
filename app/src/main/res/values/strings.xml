@@ -107,4 +107,6 @@
     <string name="releases">Releases</string>
     <string name="notes">Notes</string>
     <string name="notes_hint">Add your notes here! ✏️</string>
+    <string name="search_tab_games">Games (%1$d)</string>
+    <string name="search_tab_dlc_others"><![CDATA[DLC & Others (%1$d)]]></string>
 </resources>

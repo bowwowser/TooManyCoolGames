@@ -6,22 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.fragment.app.activityViewModels
 import com.api.igdb.exceptions.RequestException
 import com.example.toomanycoolgames.R
-import com.example.toomanycoolgames.data.TMKGResult
+import com.example.toomanycoolgames.data.checkApiTokenFreshness
 import com.example.toomanycoolgames.databinding.SearchFragmentBinding
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import proto.Game
-import java.util.*
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
 
     private var _binding: SearchFragmentBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: SearchViewModel by viewModels()
+    private val searchViewModel: SearchViewModel by activityViewModels()
+    private lateinit var resultPagesAdapter: SearchResultPagerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,62 +28,68 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = SearchFragmentBinding.inflate(inflater, container, false)
-
-        viewModel.searchResults.observe(viewLifecycleOwner, { results ->
-            when (results) {
-                is TMKGResult.Success -> updateResults(results.data)
-                is TMKGResult.Error -> showError(results.exception)
-            }
-            binding.progressGamesList.visibility = View.GONE
-        })
-
         binding.apply {
-            searchView.queryHint = checkApiTokenFreshness()
-            // TODO improve search logic
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    currentGames.adapter = null
-                    searchView.clearFocus()
-                    if (query == null) {
-                        return false
-                    }
-                    progressGamesList.visibility = View.VISIBLE
-                    viewModel.searchForGames(query)
-                    return true
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean = false
-            })
+            lifecycleOwner = this@SearchFragment
+            viewModel = searchViewModel
         }
 
+        initializeViews()
         return binding.root
     }
 
-    private fun updateResults(searchResults: List<Game>) {
-        binding.currentGames.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(context)
-            adapter = IGDBSearchResultAdapter(searchResults)
+    private fun initializeViews() {
+        bindSearchView()
+        bindTabPager()
+
+        searchViewModel.searchException.observe(viewLifecycleOwner, this::showError)
+        // TODO hack; find better way to clear progress circle
+        searchViewModel.gamesTabTitle.observe(viewLifecycleOwner, {
+            binding.progressGamesList.visibility = View.GONE
+        })
+    }
+
+    // TODO improve search logic
+    private fun bindSearchView() = binding.apply {
+        searchView.queryHint = checkApiTokenFreshness()
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchView.clearFocus()
+                return if (query == null) {
+                    false
+                } else {
+                    startSearch(query)
+                    true
+                }
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean = false
+        })
+    }
+
+    private fun startSearch(query: String) {
+        binding.apply {
+            textError.text = ""
+            progressGamesList.visibility = View.VISIBLE
         }
+        searchViewModel.searchForGames(query)
+    }
+
+    private fun bindTabPager() = binding.apply {
+        resultPagesAdapter = SearchResultPagerAdapter(this@SearchFragment)
+        pagerResults.adapter = resultPagesAdapter
+        TabLayoutMediator(tabsResults, pagerResults) { tab, position ->
+            when (position) {
+                0 -> searchViewModel.gamesTabTitle.observe(viewLifecycleOwner, { tab.text = it })
+                1 -> searchViewModel.othersTabTitle.observe(viewLifecycleOwner, { tab.text = it })
+            }
+        }.attach()
     }
 
     private fun showError(exception: RequestException) {
+        // TODO change to persistent Snackbar
         binding.textError.apply {
             visibility = View.VISIBLE
             text = getString(R.string.formatErrorWithMessage, exception.statusCode.toString())
-        }
-    }
-
-    private fun checkApiTokenFreshness(): String {
-        val regeneratedDate = 1629950006L // REPLACE when regenerated
-        val expiresIn = 5048552L // REPLACE when regenerated
-        val expireDate = (regeneratedDate + expiresIn) * 1000
-        val currentMillis = Calendar.getInstance().timeInMillis
-
-        return if (currentMillis >= expireDate) {
-            "API Key expired"
-        } else {
-            "Access Token expires in ${(expireDate - currentMillis) / 86_400_000} days"
         }
     }
 }
