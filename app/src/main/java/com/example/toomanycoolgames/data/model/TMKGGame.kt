@@ -1,4 +1,4 @@
-package com.example.toomanycoolgames.data.room
+package com.example.toomanycoolgames.data.model
 
 import androidx.room.*
 
@@ -6,7 +6,7 @@ import androidx.room.*
 data class TMKGGame(
     @PrimaryKey(autoGenerate = true) val gameId: Long,
     @ColumnInfo(name = "is_tracked") val isTracked: Boolean,
-    @ColumnInfo(name = "igdb_id") val igdbId: Long,
+    @ColumnInfo(name = "api_id") val apiId: Long,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "category") val category: Int,
     @ColumnInfo(name = "cover_id") val coverId: String,
@@ -15,11 +15,11 @@ data class TMKGGame(
     @ColumnInfo(name = "play_status_position") val playStatusPosition: Int
 )
 
-data class TMKGGameWithReleaseDates(
+data class TMKGGameRelease(
     @Embedded val game: TMKGGame,
     @Relation(
-        parentColumn = "gameId",
-        entityColumn = "game_fk"
+        parentColumn = "api_id",
+        entityColumn = "api_game_id"
     )
     val releaseDates: List<TMKGReleaseDate>
 )
@@ -27,7 +27,7 @@ data class TMKGGameWithReleaseDates(
 @Entity
 data class TMKGReleaseDate(
     @PrimaryKey(autoGenerate = true) val rdId: Long,
-    @ColumnInfo(name = "game_fk") val gameFk: Long,
+    @ColumnInfo(name = "api_game_id") val apiGameId: Long,
     @ColumnInfo(name = "platform_name") val platformName: String,
     @ColumnInfo(name = "release_date_human") val releaseDateHuman: String, // millis
     @ColumnInfo(name = "region_ordinal") val regionOrdinal: Int,

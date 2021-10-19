@@ -9,9 +9,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.toomanycoolgames.data.model.TMKGGameRelease
 import com.example.toomanycoolgames.databinding.FragmentSearchResultBinding
+import com.example.toomanycoolgames.ui.home.TMKGGameReleaseListAdapter
 import kotlinx.coroutines.flow.emptyFlow
-import proto.Game
 
 class SearchResultFragment : Fragment() {
 
@@ -23,7 +24,7 @@ class SearchResultFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSearchResultBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -41,11 +42,11 @@ class SearchResultFragment : Fragment() {
         }
     }
 
-    private fun displayResults(results: List<Game>) {
+    private fun displayResults(results: List<TMKGGameRelease>) {
         binding.resultsList.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
-            adapter = IGDBSearchResultAdapter(results)
+            adapter = TMKGGameReleaseListAdapter(results)
         }
     }
 }

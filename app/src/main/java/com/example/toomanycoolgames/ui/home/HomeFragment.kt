@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.toomanycoolgames.data.room.TMKGGame
+import com.example.toomanycoolgames.data.model.TMKGGameRelease
 import com.example.toomanycoolgames.databinding.HomeFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,7 +22,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = HomeFragmentBinding.inflate(inflater, container, false)
 
         viewModel.trackedGames.observe(viewLifecycleOwner, this::initializeViews)
@@ -31,12 +31,12 @@ class HomeFragment : Fragment() {
     }
 
     // TODO: data binding?
-    private fun initializeViews(games: List<TMKGGame>) = binding.apply {
+    private fun initializeViews(games: List<TMKGGameRelease>) = binding.apply {
         progressGamesList.visibility = View.GONE
         currentGames.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
-            adapter = TMKGGameListAdapter(games)
+            adapter = TMKGGameReleaseListAdapter(games)
         }
     }
 }

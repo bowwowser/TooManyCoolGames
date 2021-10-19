@@ -2,7 +2,7 @@ package com.example.toomanycoolgames.ui.info
 
 import androidx.lifecycle.*
 import com.example.toomanycoolgames.data.GameRepository
-import com.example.toomanycoolgames.data.room.TMKGGameWithReleaseDates
+import com.example.toomanycoolgames.data.model.TMKGGameRelease
 import com.example.toomanycoolgames.logDebug
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,15 +18,15 @@ class InfoViewModel @Inject constructor(
 
     private var _isExpanded = MutableLiveData<Boolean>(false)
     val isExpanded: LiveData<Boolean> = _isExpanded
-    val gameInfo: LiveData<TMKGGameWithReleaseDates> = liveData {
-        emitSource(repository.getGameInfoWithReleaseDates(gameId))
+    val gameInfo: LiveData<TMKGGameRelease> = liveData {
+        emitSource(repository.getGameReleases(gameId))
     }
 
     fun onTrackButtonPressed() = viewModelScope.launch {
 //        TODO null fix
         gameInfo.value?.let { game ->
             val isNowTracked = game.game.isTracked.not()
-            repository.changeGameTrackStatus(gameId, isNowTracked)
+            repository.changeTrackStatus(gameId, isNowTracked)
         }
     }
 
@@ -37,7 +37,7 @@ class InfoViewModel @Inject constructor(
     fun onNotesUpdated(notes: CharSequence) = viewModelScope.launch {
         // TODO add some proper debounce logic
         logDebug { "Updating notes (${notes.subSequence(0, minOf(notes.length, 15))}...)" }
-        repository.updateGameNotes(gameId, notes.toString())
+        repository.updateNotes(gameId, notes.toString())
     }
 
     fun onStatusSelected(
@@ -47,7 +47,7 @@ class InfoViewModel @Inject constructor(
         if (selectedStatusPosition != 0
             && selectedStatusPosition != gameInfo.value?.game?.playStatusPosition
         ) {
-            repository.changeGamePlayStatus(gameId, selectedStatusPosition)
+            repository.changePlayStatus(gameId, selectedStatusPosition)
         }
     }
 }

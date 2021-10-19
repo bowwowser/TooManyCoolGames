@@ -16,7 +16,7 @@
         android:name="com.example.toomanycoolgames.ui.search.SearchFragment"
         android:label="SearchFragment">
         <action
-            android:id="@+id/viewSearchInfo"
+            android:id="@+id/viewTrackedGameInfo"
             app:destination="@id/infoFragment" />
     </fragment>
     <fragment

@@ -3,6 +3,7 @@ package com.example.toomanycoolgames.di
 import android.content.Context
 import androidx.room.Room
 import com.example.toomanycoolgames.data.GameRepository
+import com.example.toomanycoolgames.data.api.IGDBApiWrapper
 import com.example.toomanycoolgames.data.room.TMKGDatabase
 import com.example.toomanycoolgames.data.room.TMKGGameDao
 import dagger.Module
@@ -16,10 +17,13 @@ import javax.inject.Singleton
 @Module
 class RepositoryModule {
 
+    private val IGDB_CLIENT_ID = "***REMOVED***"
+    private val IGDB_ACCESS_TOKEN = "***REMOVED***"
+
     @Singleton
     @Provides
-    fun providesGameRepository(tmkgGameDao: TMKGGameDao): GameRepository {
-        return GameRepository(tmkgGameDao)
+    fun providesGameRepository(tmkgGameDao: TMKGGameDao, apiWrapper: IGDBApiWrapper): GameRepository {
+        return GameRepository(tmkgGameDao, apiWrapper)
     }
 
     @Singleton
@@ -35,6 +39,10 @@ class RepositoryModule {
             .fallbackToDestructiveMigration()
             .build()
     }
+
+    @Singleton
+    @Provides
+    fun providesIGDBWrapper(): IGDBApiWrapper = IGDBApiWrapper(IGDB_CLIENT_ID, IGDB_ACCESS_TOKEN)
 }
 
 // TODO sort out callback management

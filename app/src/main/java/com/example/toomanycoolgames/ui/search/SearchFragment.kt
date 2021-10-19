@@ -7,9 +7,8 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.api.igdb.exceptions.RequestException
 import com.example.toomanycoolgames.R
-import com.example.toomanycoolgames.data.checkApiTokenFreshness
+import com.example.toomanycoolgames.data.api.checkApiTokenFreshness
 import com.example.toomanycoolgames.databinding.SearchFragmentBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +28,7 @@ class SearchFragment : Fragment() {
     ): View {
         _binding = SearchFragmentBinding.inflate(inflater, container, false)
         binding.apply {
-            lifecycleOwner = this@SearchFragment
+            lifecycleOwner = viewLifecycleOwner
             viewModel = searchViewModel
         }
 
@@ -43,9 +42,9 @@ class SearchFragment : Fragment() {
 
         searchViewModel.searchException.observe(viewLifecycleOwner, this::showError)
         // TODO hack; find better way to clear progress circle
-        searchViewModel.gamesTabTitle.observe(viewLifecycleOwner, {
+        searchViewModel.gamesTabTitle.observe(viewLifecycleOwner) {
             binding.progressGamesList.visibility = View.GONE
-        })
+        }
     }
 
     // TODO improve search logic
@@ -79,17 +78,17 @@ class SearchFragment : Fragment() {
         pagerResults.adapter = resultPagesAdapter
         TabLayoutMediator(tabsResults, pagerResults) { tab, position ->
             when (position) {
-                0 -> searchViewModel.gamesTabTitle.observe(viewLifecycleOwner, { tab.text = it })
-                1 -> searchViewModel.othersTabTitle.observe(viewLifecycleOwner, { tab.text = it })
+                0 -> searchViewModel.gamesTabTitle.observe(viewLifecycleOwner) { tab.text = it }
+                1 -> searchViewModel.othersTabTitle.observe(viewLifecycleOwner) { tab.text = it }
             }
         }.attach()
     }
 
-    private fun showError(exception: RequestException) {
+    private fun showError(exception: Exception) {
         // TODO change to persistent Snackbar
         binding.textError.apply {
             visibility = View.VISIBLE
-            text = getString(R.string.formatErrorWithMessage, exception.statusCode.toString())
+            text = getString(R.string.formatErrorWithMessage, exception.toString())
         }
     }
 }
