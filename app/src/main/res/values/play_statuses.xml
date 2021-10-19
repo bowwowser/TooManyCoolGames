@@ -8,4 +8,13 @@
         <item>Story-focused 📚</item>
         <item>Waiting ⏰</item>
     </string-array>
+
+    <string-array name="play_status_emoji_icons">
+        <item>❓</item>
+        <item>🎮</item>
+        <item>🔁</item>
+        <item>💯</item>
+        <item>📚</item>
+        <item>⏰</item>
+    </string-array>
 </resources>

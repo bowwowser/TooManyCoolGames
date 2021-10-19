@@ -38,14 +38,6 @@ android {
         viewBinding = true
         dataBinding = true
     }
-
-    lint {
-        disable(
-            "ObsoleteSdkInt",
-            "UnusedResources",
-            "MediaCapabilities"
-        )
-    }
 }
 
 dependencies {

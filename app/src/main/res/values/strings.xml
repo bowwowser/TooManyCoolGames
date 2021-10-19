@@ -1,10 +1,8 @@
 <resources>
-    <string name="title_info">Info</string>
     <string name="app_name">TooManyCoolGames</string>
     <string name="title_home">Home</string>
     <string name="todo">TODO</string>
     <string name="error_game_fetch">Error trying to fetch games:\n</string>
-    <string name="title_activity_info">Info</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -94,10 +92,7 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
-    <string name="action_settings">Settings</string>
-    <string name="infoTrackButtonLabel">Track?</string>
     <string name="formatErrorWithMessage">Error!\n%1$s</string>
-    <string name="cdGameCover">Game cover</string>
     <string name="contentdesc_igdbGameCover">IGDB game cover</string>
     <string name="contentdesc_fabTrackGame">Track this game</string>
     <string name="title_search">Search</string>
