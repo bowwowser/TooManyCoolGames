@@ -27,14 +27,14 @@
         android:singleLine="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/gameState"
+        app:layout_constraintEnd_toStartOf="@+id/gameStateEmoji"
         app:layout_constraintStart_toEndOf="@+id/gameCover"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.522"
         tools:text="Dog Game: Game of the Dog of the Game" />
 
-    <ImageView
-        android:id="@+id/gameState"
+    <TextView
+        android:id="@+id/gameStateEmoji"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -42,5 +42,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?android:attr/actionModeFindDrawable" />
+        tools:text="❓" />
 </androidx.constraintlayout.widget.ConstraintLayout>

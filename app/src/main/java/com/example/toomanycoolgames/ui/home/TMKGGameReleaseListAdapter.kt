@@ -49,6 +49,9 @@ class TMKGGameReleaseListAdapter(private val games: List<TMKGGameRelease>) :
                     .fallback(R.drawable.ic_baseline_bookmark_border_24)
                     .into(gameCover)
 
+                gameStateEmoji.text =
+                    root.context.resources.getStringArray(R.array.play_status_emoji_icons)[game.playStatusPosition]
+
                 gameItem.setOnClickListener { view ->
                     view.findNavController()
                         .navigate(HomeFragmentDirections.viewTrackedGameInfo(game.apiId))
