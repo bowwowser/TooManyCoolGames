@@ -3,7 +3,7 @@ package com.example.toomanycoolgames.ui.info
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.toomanycoolgames.data.room.TMKGReleaseDate
+import com.example.toomanycoolgames.data.model.TMKGReleaseDate
 import com.example.toomanycoolgames.databinding.ItemReleaseDateBinding
 import proto.RegionRegionEnum
 

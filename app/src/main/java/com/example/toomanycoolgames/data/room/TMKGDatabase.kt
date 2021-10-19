@@ -2,8 +2,10 @@ package com.example.toomanycoolgames.data.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.example.toomanycoolgames.data.model.TMKGGame
+import com.example.toomanycoolgames.data.model.TMKGReleaseDate
 
-@Database(entities = [TMKGGame::class, TMKGReleaseDate::class], version = 9, exportSchema = false)
+@Database(entities = [TMKGGame::class, TMKGReleaseDate::class], version = 10, exportSchema = false)
 abstract class TMKGDatabase : RoomDatabase() {
 
     abstract fun gameDao(): TMKGGameDao

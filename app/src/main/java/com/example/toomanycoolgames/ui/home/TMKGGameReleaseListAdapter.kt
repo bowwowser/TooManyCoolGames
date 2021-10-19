@@ -1,4 +1,4 @@
-package com.example.toomanycoolgames.ui.search
+package com.example.toomanycoolgames.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,12 +10,11 @@ import com.api.igdb.utils.ImageSize
 import com.api.igdb.utils.imageBuilder
 import com.bumptech.glide.Glide
 import com.example.toomanycoolgames.R
-import com.example.toomanycoolgames.data.room.TMKGGame
+import com.example.toomanycoolgames.data.model.TMKGGameRelease
 import com.example.toomanycoolgames.databinding.ItemGameBinding
-import proto.Game
 
-class IGDBSearchResultAdapter(private val games: List<Game>) :
-    ListAdapter<TMKGGame, IGDBSearchResultAdapter.GameHolder>(GameComparator()) {
+class TMKGGameReleaseListAdapter(private val games: List<TMKGGameRelease>) :
+    ListAdapter<TMKGGameRelease, TMKGGameReleaseListAdapter.GameHolder>(GameComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameHolder {
         val gameBinding =
@@ -33,7 +32,8 @@ class IGDBSearchResultAdapter(private val games: List<Game>) :
         private val gameBinding: ItemGameBinding
     ) : RecyclerView.ViewHolder(gameBinding.root) {
 
-        fun bind(game: Game) {
+        fun bind(gameValue: TMKGGameRelease) {
+            val game = gameValue.game
             gameBinding.apply {
                 gameName.text = game.name
 
@@ -41,8 +41,8 @@ class IGDBSearchResultAdapter(private val games: List<Game>) :
                 // avoids errors, but probs more idiomatic way to handle this
                 Glide.with(root.context)
                     .load(
-                        if (game.cover.imageId.isNullOrBlank()) null else imageBuilder(
-                            game.cover.imageId,
+                        if (game.coverId.isBlank()) null else imageBuilder(
+                            game.coverId,
                             ImageSize.COVER_BIG
                         )
                     )
@@ -51,19 +51,19 @@ class IGDBSearchResultAdapter(private val games: List<Game>) :
 
                 gameItem.setOnClickListener { view ->
                     view.findNavController()
-                        .navigate(SearchFragmentDirections.viewSearchInfo(game.id))
+                        .navigate(HomeFragmentDirections.viewTrackedGameInfo(game.apiId))
                 }
             }
         }
     }
 
-    class GameComparator : DiffUtil.ItemCallback<TMKGGame>() {
-        override fun areItemsTheSame(oldItem: TMKGGame, newItem: TMKGGame): Boolean {
+    class GameComparator : DiffUtil.ItemCallback<TMKGGameRelease>() {
+        override fun areItemsTheSame(oldItem: TMKGGameRelease, newItem: TMKGGameRelease): Boolean {
             return oldItem === newItem
         }
 
-        override fun areContentsTheSame(oldItem: TMKGGame, newItem: TMKGGame): Boolean {
-            return oldItem.gameId == newItem.gameId
+        override fun areContentsTheSame(oldItem: TMKGGameRelease, newItem: TMKGGameRelease): Boolean {
+            return oldItem.game.gameId == newItem.game.gameId
         }
     }
 }

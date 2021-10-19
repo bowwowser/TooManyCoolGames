@@ -14,7 +14,7 @@ import com.api.igdb.utils.ImageType
 import com.api.igdb.utils.imageBuilder
 import com.bumptech.glide.Glide
 import com.example.toomanycoolgames.R
-import com.example.toomanycoolgames.data.room.TMKGGameWithReleaseDates
+import com.example.toomanycoolgames.data.model.TMKGGameRelease
 import com.example.toomanycoolgames.databinding.InfoActivityFunBinding
 import com.example.toomanycoolgames.logDebug
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,10 +31,10 @@ class InfoFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = InfoActivityFunBinding.inflate(inflater, container, false)
         binding.apply {
-            lifecycleOwner = this@InfoFragment
+            lifecycleOwner = viewLifecycleOwner
             viewModel = infoViewModel
         }
 
@@ -48,7 +48,7 @@ class InfoFragment : Fragment() {
 
         infoViewModel.gameInfo.observe(requireActivity(), this::initializeViews)
 
-        infoViewModel.isExpanded.observe(requireActivity(), { isExpanded ->
+        infoViewModel.isExpanded.observe(requireActivity()) { isExpanded ->
             binding.infobox.cardGameSummary.infoGameSummary.apply {
                 if (isExpanded) {
                     maxLines = Int.MAX_VALUE
@@ -58,12 +58,12 @@ class InfoFragment : Fragment() {
                     ellipsize = TextUtils.TruncateAt.END
                 }
             }
-        })
+        }
 
         return binding.root
     }
 
-    private fun initializeViews(game: TMKGGameWithReleaseDates) {
+    private fun initializeViews(game: TMKGGameRelease) {
         binding.apply {
             Glide.with(root.context)
                 .load(imageBuilder(game.game.coverId, ImageSize.HD, ImageType.PNG))
