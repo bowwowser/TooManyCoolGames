@@ -18,7 +18,7 @@ import javax.inject.Singleton
 class RepositoryModule {
 
     private val IGDB_CLIENT_ID = "j3fqgr3dxzsnzzwrzd5um01o63k9gi"
-    private val IGDB_ACCESS_TOKEN = "kazo8nfopyu08u5vm7gg8x5fjqtg4g"
+    private val IGDB_ACCESS_TOKEN = "exrlz06f5kkp8vvbfy6atne9x8box0"
 
     @Singleton
     @Provides

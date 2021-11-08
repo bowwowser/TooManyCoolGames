@@ -3,7 +3,7 @@ package com.example.toomanycoolgames.data
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import com.example.toomanycoolgames.data.api.ApiResult
-import com.example.toomanycoolgames.data.api.IGDBApiWrapper
+import com.example.toomanycoolgames.data.api.ApiWrapper
 import com.example.toomanycoolgames.data.model.TMKGGameRelease
 import com.example.toomanycoolgames.data.room.TMKGGameDao
 import kotlinx.coroutines.CoroutineDispatcher
@@ -18,7 +18,7 @@ sealed class TMKGResult<out R> {
 
 class GameRepository @Inject constructor(
     private val tmkgGameDao: TMKGGameDao,
-    private val apiWrapper: IGDBApiWrapper,
+    private val apiWrapper: ApiWrapper,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
