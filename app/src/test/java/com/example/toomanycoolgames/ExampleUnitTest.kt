@@ -12,6 +12,8 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
+        // TODO look into this warning more & how to resolve (could come up later)
+        @Suppress("INTEGER_OPERATOR_RESOLVE_WILL_CHANGE")
         assertEquals(4, 2 + 2)
     }
 }

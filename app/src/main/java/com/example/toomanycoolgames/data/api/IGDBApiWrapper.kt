@@ -106,8 +106,8 @@ enum class Fields(val value: String) {
 }
 
 fun checkApiTokenFreshness(): String {
-    val regeneratedDate = 1629950006L // REPLACE when regenerated
-    val expiresIn = 5048552L // REPLACE when regenerated
+    val regeneratedDate = 1635273924L // REPLACE when regenerated
+    val expiresIn = 5316092L // REPLACE when regenerated
     val expireDate = (regeneratedDate + expiresIn) * 1000
     val currentMillis = Calendar.getInstance().timeInMillis
 
