@@ -4,9 +4,12 @@ on:
   push
 
 jobs:
-  unit_tests:
-    name: Unit Tests
+  build_app:
+    name: Build App
     runs-on: ubuntu-latest
+
+    outputs:
+      buildDir: ${{ steps.st }}
 
     steps:
       - uses: actions/checkout@v2
@@ -26,16 +29,78 @@ jobs:
 
       - name: Build app
         run: ./gradlew build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-build
+          path: app/build
+
+  unit_tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    needs: build_app
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-gradle-packages
+        with:
+          key: ${{ runner.os }}-test-${{ env.cache-name }}
+          restore-keys: |
+            ${{ runner.os }}-test-
+            ${{ runner.os }}-
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: app-build
+          path: app/build
+
       - name: Run local unit tests
         run: ./gradlew test
-      - name: Run instrumented unit tests
-        run: ./gradlew connectedAndroidTest
 
       - name: Upload local test reports
         uses: actions/upload-artifact@v2
         with:
           name: local-unit-test-report
           path: app/build/reports/tests/testDebugUnitTest
+  android_tests:
+    name: Android Tests
+    runs-on: macos-latest
+    needs: build_app
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-gradle-packages
+        with:
+          key: ${{ runner.os }}-androidTest-${{ env.cache-name }}
+          restore-keys: |
+            ${{ runner.os }}-androidTest-
+            ${{ runner.os }}-
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: app-build
+          path: app/build
+
+      - name: Run instrumented unit tests
+        run: ./gradlew connectedAndroidTest
+
       - name: Upload instrumented test reports
         uses: actions/upload-artifact@v2
         with:
