@@ -5,9 +5,25 @@ on:
 
 jobs:
   unit_tests:
+    name: Unit Tests
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-gradle-packages
+        with:
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+          path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+
       - name: Build app
         run: ./gradlew build
       - name: Run unit tests
