@@ -63,24 +63,27 @@ class InfoFragment : Fragment() {
         return binding.root
     }
 
-    private fun initializeViews(game: TMKGGameRelease) {
-        binding.apply {
-            Glide.with(root.context)
-                .load(imageBuilder(game.game.coverId, ImageSize.HD, ImageType.PNG))
-                .into(infoGameCover)
-            infoProgressLoad.visibility = View.INVISIBLE
+    // TODO null fix
+    private fun initializeViews(game: TMKGGameRelease?) {
+        game?.let {
+            binding.apply {
+                Glide.with(root.context)
+                    .load(imageBuilder(game.game.coverId, ImageSize.HD, ImageType.PNG))
+                    .into(infoGameCover)
+                infoProgressLoad.visibility = View.INVISIBLE
 
-            logDebug { "Release date size: ${game.releaseDates.size}" }
+                logDebug { "Release date size: ${game.releaseDates.size}" }
 
-            binding.infobox.cardGameReleases.listReleaseDates.apply {
-                setHasFixedSize(true)
-                isNestedScrollingEnabled = false
-                layoutManager = LinearLayoutManager(context)
-                adapter = ReleaseDateAdapter(game.releaseDates)
-            }
-            binding.infobox.cardGameNotes.spinnerStatus.apply {
-                adapter = statusSpinnerAdapter
-                setSelection(game.game.playStatusPosition)
+                binding.infobox.cardGameReleases.listReleaseDates.apply {
+                    setHasFixedSize(true)
+                    isNestedScrollingEnabled = false
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = ReleaseDateAdapter(game.releaseDates)
+                }
+                binding.infobox.cardGameNotes.spinnerStatus.apply {
+                    adapter = statusSpinnerAdapter
+                    setSelection(game.game.playStatusPosition)
+                }
             }
         }
     }

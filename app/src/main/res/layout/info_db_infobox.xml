@@ -81,7 +81,7 @@
             android:clickable="true"
             android:contentDescription="@string/contentdesc_fabTrackGame"
             android:focusable="true"
-            android:onClick="@{() -> viewModel.onTrackButtonPressed()}"
+            android:onClick="@{() -> viewModel.trackGameRelease()}"
             app:customIsOn="@{viewModel.gameInfo.game.tracked}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

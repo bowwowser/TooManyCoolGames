@@ -39,14 +39,14 @@
                 android:gravity="top"
                 android:importantForAutofill="no"
                 android:text="@{viewModel.gameInfo.game.notes}"
-                android:onTextChanged="@{(s, _, before, count) -> viewModel.onNotesUpdated(s)}"
+                android:onTextChanged="@{(s, _, before, count) -> viewModel.updateNotes(s)}"
                 />
 
             <Spinner
                 android:id="@+id/spinnerStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onItemSelected="@{(p, v, position, id) -> viewModel.onStatusSelected(position)}"
+                android:onItemSelected="@{(p, v, position, id) -> viewModel.changePlayStatus(position)}"
                 android:minHeight="48dp"
                 />
 
