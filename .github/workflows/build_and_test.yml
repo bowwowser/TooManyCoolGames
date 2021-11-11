@@ -21,8 +21,8 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
           path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
+            ~/.gradle/caches
+            ~/.gradle/wrapper
 
       - name: Build app
         run: ./gradlew build
