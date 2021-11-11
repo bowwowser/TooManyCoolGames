@@ -1,14 +1,10 @@
 package com.example.toomanycoolgames.ui.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.toomanycoolgames.data.GameRepository
-import com.example.toomanycoolgames.data.api.ApiResult
-import com.example.toomanycoolgames.data.api.ApiWrapper
-import com.example.toomanycoolgames.data.model.TMKGGameRelease
-import com.example.toomanycoolgames.data.room.TMKGDatabase
+import com.example.toomanycoolgames.data.TMKGGameRepository
+import com.example.toomanycoolgames.data.api.NoOpApiWrapper
+import com.example.toomanycoolgames.data.db.FakeDBWrapper
 import com.example.toomanycoolgames.getOrAwaitValue
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
@@ -27,11 +23,8 @@ class HomeViewModelTest {
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
-    val gameRepository = GameRepository(
-        tmkgGameDao = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(),
-            TMKGDatabase::class.java
-        ).build().gameDao(),
+    val gameRepository = TMKGGameRepository(
+        dbWrapper = FakeDBWrapper(hashMapOf()),
         apiWrapper = NoOpApiWrapper()
     )
 
@@ -52,15 +45,4 @@ class HomeViewModelTest {
         // Then return a LiveData list of games for access
         assertThat(games.size, `is`(0))
     }
-}
-
-class NoOpApiWrapper : ApiWrapper {
-    override suspend fun getGameReleaseByApiId(apiId: Long): ApiResult<TMKGGameRelease> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getGameReleasesBySearchQuery(query: String): ApiResult<List<TMKGGameRelease>> {
-        TODO("Not yet implemented")
-    }
-
 }
