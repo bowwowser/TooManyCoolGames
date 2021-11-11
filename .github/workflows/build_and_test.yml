@@ -26,11 +26,18 @@ jobs:
 
       - name: Build app
         run: ./gradlew build
-      - name: Run unit tests
+      - name: Run local unit tests
         run: ./gradlew test
+      - name: Run instrumented unit tests
+        run: ./gradlew connectedAndroidTest
 
-      - name: Upload test reports
+      - name: Upload local test reports
         uses: actions/upload-artifact@v2
         with:
-          name: unit-test-report
+          name: local-unit-test-report
           path: app/build/reports/tests/testDebugUnitTest
+      - name: Upload instrumented test reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: instrumented-unit-test-report
+          path: app/build/reports/androidTests/connected/testDebugUnitTest
