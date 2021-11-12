@@ -13,10 +13,8 @@ jobs:
 
       - name: Cache Gradle packages
         uses: actions/cache@v2
-        env:
-          cache-name: cache-gradle-packages
         with:
-          key: ${{ runner.os }}-buildAndTest-${{ env.cache-name }}
+          key: ${{ runner.os }}-buildAndTest-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-buildAndTest-
             ${{ runner.os }}-
@@ -44,6 +42,10 @@ jobs:
           name: local-unit-test-report
           path: app/build/reports/tests/testDebugUnitTest
 
+      - name: Stop Gradle daemon
+        if: always()
+        run: ./gradlew --stop
+
   lint:
     name: Run Quality Checks
     runs-on: ubuntu-latest
@@ -53,10 +55,8 @@ jobs:
 
       - name: Cache Gradle packages
         uses: actions/cache@v2
-        env:
-          cache-name: cache-gradle-packages
         with:
-          key: ${{ runner.os }}-lint-${{ env.cache-name }}
+          key: ${{ runner.os }}-lint-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-lint-
             ${{ runner.os }}-
@@ -73,6 +73,10 @@ jobs:
           name: lint-report
           path: app/build/reports/lint-results-debug.html
 
+      - name: Stop Gradle daemon
+        if: always()
+        run: ./gradlew --stop
+
 # TODO consider moving to separate job when(if) we can
 # TODO  efficiently move build artifacts
 #  unit_tests:
@@ -88,7 +92,7 @@ jobs:
 #        env:
 #          cache-name: cache-gradle-packages
 #        with:
-#          key: ${{ runner.os }}-test-${{ env.cache-name }}
+#          key: ${{ runner.os }}-test-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 #          restore-keys: |
 #            ${{ runner.os }}-test-
 #            ${{ runner.os }}-
@@ -120,7 +124,7 @@ jobs:
 #        env:
 #          cache-name: cache-gradle-packages
 #        with:
-#          key: ${{ runner.os }}-androidTest-${{ env.cache-name }}
+#          key: ${{ runner.os }}-androidTest-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 #          restore-keys: |
 #            ${{ runner.os }}-androidTest-
 #            ${{ runner.os }}-
