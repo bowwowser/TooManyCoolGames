@@ -70,10 +70,22 @@ jobs:
   lint:
     name: Run Quality Checks
     runs-on: ubuntu-latest
-    needs: build_app
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-gradle-packages
+        with:
+          key: ${{ runner.os }}-lint-${{ env.cache-name }}
+          restore-keys: |
+            ${{ runner.os }}-lint-
+            ${{ runner.os }}-
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
 
       - name: Run linter & other checks
         run: ./gradlew lint
