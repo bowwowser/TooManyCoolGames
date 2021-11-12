@@ -1,11 +1,11 @@
 package com.example.toomanycoolgames.ui.search
 
-import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.*
 import com.example.toomanycoolgames.R
-import com.example.toomanycoolgames.data.GameRepository
-import com.example.toomanycoolgames.data.TMKGResult
+import com.example.toomanycoolgames.data.Result.Error
+import com.example.toomanycoolgames.data.Result.Success
+import com.example.toomanycoolgames.data.TMKGGameRepository
 import com.example.toomanycoolgames.data.isMainGame
 import com.example.toomanycoolgames.data.model.TMKGGameRelease
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     @ApplicationContext context: Context,
-    private val gameRepository: GameRepository
+    private val gameRepository: TMKGGameRepository
 ) : ViewModel() {
 
     private val _searchResults = MutableSharedFlow<List<TMKGGameRelease>>(replay = 1)
@@ -38,8 +38,8 @@ class SearchViewModel @Inject constructor(
 
     fun searchForGames(query: String) = viewModelScope.launch {
         when (val results = gameRepository.searchApiForGames(query)) {
-            is TMKGResult.Success -> _searchResults.tryEmit(results.data)
-            is TMKGResult.Error -> _searchException.postValue(results.exception)
+            is Success -> _searchResults.tryEmit(results.data)
+            is Error -> _searchException.postValue(results.exception)
         }
     }
 }

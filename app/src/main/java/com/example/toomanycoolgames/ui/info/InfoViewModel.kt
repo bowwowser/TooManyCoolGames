@@ -1,7 +1,8 @@
 package com.example.toomanycoolgames.ui.info
 
 import androidx.lifecycle.*
-import com.example.toomanycoolgames.data.GameRepository
+import com.example.toomanycoolgames.data.TMKGGameRepository
+import com.example.toomanycoolgames.data.computeResult
 import com.example.toomanycoolgames.data.model.TMKGGameRelease
 import com.example.toomanycoolgames.logDebug
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,19 +11,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InfoViewModel @Inject constructor(
-    private val repository: GameRepository,
+    private val repository: TMKGGameRepository,
     state: SavedStateHandle
 ) : ViewModel() {
 
     private val gameId: Long = state["gameId"] ?: throw IllegalArgumentException("Missing game id")
 
-    private var _isExpanded = MutableLiveData<Boolean>(false)
+    private var _isExpanded = MutableLiveData(false)
     val isExpanded: LiveData<Boolean> = _isExpanded
-    val gameInfo: LiveData<TMKGGameRelease> = liveData {
-        emitSource(repository.getGameReleases(gameId))
+    val gameInfo: LiveData<TMKGGameRelease?> = liveData {
+        emitSource(repository.observeGameRelease(gameId).map { computeResult(it) { showError() } })
     }
 
-    fun onTrackButtonPressed() = viewModelScope.launch {
+    fun trackGameRelease() = viewModelScope.launch {
 //        TODO null fix
         gameInfo.value?.let { game ->
             val isNowTracked = game.game.isTracked.not()
@@ -30,17 +31,17 @@ class InfoViewModel @Inject constructor(
         }
     }
 
-    fun onSummaryExpandPressed() {
+    fun expandSummary() {
         _isExpanded.value = isExpanded.value?.not()
     }
 
-    fun onNotesUpdated(notes: CharSequence) = viewModelScope.launch {
+    fun updateNotes(notes: CharSequence) = viewModelScope.launch {
         // TODO add some proper debounce logic
         logDebug { "Updating notes (${notes.subSequence(0, minOf(notes.length, 15))}...)" }
         repository.updateNotes(gameId, notes.toString())
     }
 
-    fun onStatusSelected(
+    fun changePlayStatus(
         selectedStatusPosition: Int
     ) = viewModelScope.launch {
         logDebug { "Status selected ($selectedStatusPosition)" }
@@ -49,5 +50,9 @@ class InfoViewModel @Inject constructor(
         ) {
             repository.changePlayStatus(gameId, selectedStatusPosition)
         }
+    }
+
+    private fun showError() {
+        TODO("Not yet implemented")
     }
 }

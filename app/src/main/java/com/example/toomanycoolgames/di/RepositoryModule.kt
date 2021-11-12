@@ -2,10 +2,11 @@ package com.example.toomanycoolgames.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.toomanycoolgames.data.GameRepository
+import com.example.toomanycoolgames.data.TMKGGameRepository
 import com.example.toomanycoolgames.data.api.IGDBApiWrapper
-import com.example.toomanycoolgames.data.room.TMKGDatabase
-import com.example.toomanycoolgames.data.room.TMKGGameDao
+import com.example.toomanycoolgames.data.db.RoomDBWrapper
+import com.example.toomanycoolgames.data.db.TMKGDatabase
+import com.example.toomanycoolgames.data.db.TMKGGameDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,13 +19,20 @@ import javax.inject.Singleton
 class RepositoryModule {
 
     private val IGDB_CLIENT_ID = "j3fqgr3dxzsnzzwrzd5um01o63k9gi"
-    private val IGDB_ACCESS_TOKEN = "kazo8nfopyu08u5vm7gg8x5fjqtg4g"
+    private val IGDB_ACCESS_TOKEN = "exrlz06f5kkp8vvbfy6atne9x8box0"
 
     @Singleton
     @Provides
-    fun providesGameRepository(tmkgGameDao: TMKGGameDao, apiWrapper: IGDBApiWrapper): GameRepository {
-        return GameRepository(tmkgGameDao, apiWrapper)
+    fun providesGameRepository(
+        dbWrapper: RoomDBWrapper,
+        apiWrapper: IGDBApiWrapper
+    ): TMKGGameRepository {
+        return TMKGGameRepository(dbWrapper, apiWrapper)
     }
+
+    @Singleton
+    @Provides
+    fun providesRoomWrapper(gameDao: TMKGGameDao): RoomDBWrapper = RoomDBWrapper(gameDao)
 
     @Singleton
     @Provides
