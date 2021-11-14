@@ -47,7 +47,7 @@
                     android:maxLines="5"
                     android:text="@{viewModel.gameInfo.game.summary}"
                     android:textAppearance="?attr/textAppearanceBody2"
-                    android:textColor="@android:color/secondary_text_light"
+                    android:textColor="?android:attr/textColorPrimary"
                     tools:text="@string/large_text"
                     />
 
@@ -59,7 +59,7 @@
                 android:id="@+id/buttonExpandSummary"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="#EEE"
+                android:background="?attr/colorSurface"
                 android:contentDescription="@string/expand_game_summary"
                 android:onClick="@{() -> viewModel.expandSummary()}"
                 android:src="@drawable/ic_baseline_expand_more_24"

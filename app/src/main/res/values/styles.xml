@@ -1,20 +1,28 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="toolbarStyle">@style/TMKGToolbar</item>
+        <item name="bottomNavigationStyle">@style/TMKGBottomNav</item>
     </style>
 
-    <!--    <style name="AppTheme.NoActionBar">-->
-    <!--        <item name="windowActionBar">false</item>-->
-    <!--        <item name="windowNoTitle">true</item>-->
-    <!--    </style>-->
+    <!-- Day/Night colour overrides -->
 
-    <!--    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />-->
+    <style name="TMKGToolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="titleTextColor">?attr/colorOnPrimarySurface</item>
+    </style>
 
-    <!--    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
+    <style name="TMKGBottomNav" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="itemTextColor">?attr/colorOnPrimarySurface</item>
+        <item name="itemIconTint">?attr/colorOnPrimarySurface</item>
+    </style>
 
+    <!-- Individual component overrides -->
+
+    <style name="TMKGBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="backgroundTint">?attr/colorSurface</item>
+    </style>
 </resources>
