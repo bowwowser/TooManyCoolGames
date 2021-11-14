@@ -48,11 +48,13 @@ IN PROGRESS
 ### Package Overview
 
 TLD: `com.example.toomanycoolgames`
-| Name | Description | | --- | --- | | `.data` | Data layer code for fetching, caching, and storing
-game-related info (info fetched from API, personal notes, etc.) | | `.di` | Dependency injection
-layer; simplifies in-app dependency management | | `.ui` | UI top-layer package, for main activity
-and shared UI code | | `.ui.home` | UI layer code related to home screen for viewing tracked games |
+
+| Name | Description | 
+| --- | --- | 
+| `.data` | Data layer code for fetching, caching, and storing game-related info (info fetched from API, personal notes, etc.) | 
+| `.di` | Dependency injection layer; simplifies in-app dependency management | 
+| `.ui` | UI top-layer package, for main activity and shared UI code |
+| `.ui.home` | UI layer code related to home screen for viewing tracked games |
 | `.ui.info` | UI layer code related to info screen for viewing detailed info for a specific game |
-| `.ui.search` | UI layer code related to search screen for finding game info on API through
-filters, sorting, and other means |
+| `.ui.search` | UI layer code related to search screen for finding game info on API through filters, sorting, and other means |
 
