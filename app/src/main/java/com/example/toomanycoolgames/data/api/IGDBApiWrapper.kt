@@ -4,6 +4,9 @@ import com.api.igdb.apicalypse.APICalypse
 import com.api.igdb.exceptions.RequestException
 import com.api.igdb.request.IGDBWrapper
 import com.api.igdb.request.games
+import com.example.toomanycoolgames.data.Result
+import com.example.toomanycoolgames.data.Result.Error
+import com.example.toomanycoolgames.data.Result.Success
 import com.example.toomanycoolgames.data.model.TMKGGame
 import com.example.toomanycoolgames.data.model.TMKGGameRelease
 import com.example.toomanycoolgames.data.model.TMKGReleaseDate
@@ -18,23 +21,23 @@ class IGDBApiWrapper(clientId: String, accessToken: String) : ApiWrapper {
         IGDBWrapper.setCredentials(clientId, accessToken)
     }
 
-    override suspend fun getGameReleaseByApiId(apiId: Long): ApiResult<TMKGGameRelease> {
+    override suspend fun getGameReleaseByApiId(apiId: Long): Result<TMKGGameRelease> {
         return try {
             val game = IGDBWrapper.games(gameInfoQuery(apiId)).first()
-            ApiResult.Success(game.toTMKGGameRelease())
+            Success(game.toTMKGGameRelease())
         } catch (e: RequestException) {
             logError(e) { "Error querying IGDB game [$apiId]: ${e.message}" }
-            ApiResult.Error(e)
+            Error(e)
         }
     }
 
-    override suspend fun getGameReleasesBySearchQuery(query: String): ApiResult<List<TMKGGameRelease>> {
+    override suspend fun getGameReleasesBySearchQuery(query: String): Result<List<TMKGGameRelease>> {
         return try {
             val games = IGDBWrapper.games(gameSearchQuery(query))
-            ApiResult.Success(games.map { it.toTMKGGameRelease() })
+            Success(games.map { it.toTMKGGameRelease() })
         } catch (e: RequestException) {
             logError(e) { "Error searching IGDB for \"$query\": ${e.message}" }
-            ApiResult.Error(e)
+            Error(e)
         }
     }
 
@@ -57,19 +60,14 @@ fun Game.toTMKGGameRelease(): TMKGGameRelease {
 }
 
 fun Game.toTMKGGame(): TMKGGame = TMKGGame(
-    gameId = 0,
-    isTracked = false,
     apiId = id,
     name = name,
     category = category.number,
     coverId = cover.imageId,
-    summary = summary,
-    notes = "",
-    playStatusPosition = 0
+    summary = summary
 )
 
 fun ReleaseDate.toTMKGReleaseDate(gameId: Long): TMKGReleaseDate = TMKGReleaseDate(
-    rdId = 0,
     apiGameId = gameId,
     platformName = platform.name,
     releaseDateHuman = human,
@@ -106,8 +104,8 @@ enum class Fields(val value: String) {
 }
 
 fun checkApiTokenFreshness(): String {
-    val regeneratedDate = 1629950006L // REPLACE when regenerated
-    val expiresIn = 5048552L // REPLACE when regenerated
+    val regeneratedDate = 1635273924L // REPLACE when regenerated
+    val expiresIn = 5316092L // REPLACE when regenerated
     val expireDate = (regeneratedDate + expiresIn) * 1000
     val currentMillis = Calendar.getInstance().timeInMillis
 

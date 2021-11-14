@@ -1,0 +1,105 @@
+name: Standard Tasks
+
+on:
+  push
+
+jobs:
+  build_and_local_test:
+    name: Build and run local unit tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          key: ${{ runner.os }}-buildAndLocalTest-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-buildAndLocalTest-
+            ${{ runner.os }}-
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+
+      - name: Build app
+        run: ./gradlew build
+
+      # TODO determine better candidates for build upload
+      # TODO  whole directory takes a fair bit of time
+      #      - name: Upload build artifacts
+      #        uses: actions/upload-artifact@v2
+      #        with:
+      #          name: app-build
+      #          path: app/build
+
+      # TODO consider moving to separate job when(if) we can
+      - name: Run local unit tests
+        run: ./gradlew test
+
+      - name: Upload local test reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: local-unit-test-report
+          path: app/build/reports/tests/testDebugUnitTest
+
+      - name: Stop Gradle daemon
+        if: always()
+        run: ./gradlew --stop
+
+  lint:
+    name: Run quality checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          key: ${{ runner.os }}-lint-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-lint-
+            ${{ runner.os }}-
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+
+      - name: Run linter & other checks
+        run: ./gradlew lint
+
+      - name: Upload lint report
+        uses: actions/upload-artifact@v2
+        with:
+          name: lint-report
+          path: app/build/reports/lint-results-debug.html
+
+      - name: Stop Gradle daemon
+        if: always()
+        run: ./gradlew --stop
+
+# expensive; low priority for GH actions
+# TODO use reactivecircus/android-emulator-runner for running the tests
+#  android_tests:
+#    name: Android Tests
+#    runs-on: macos-latest
+#    needs: build_app
+#
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      - name: Cache Gradle packages
+#        uses: actions/cache@v2
+#        env:
+#          cache-name: cache-gradle-packages
+#        with:
+#          ...
+#
+#      - name: Run instrumented unit tests
+#        run: ./gradlew connectedAndroidTest
+#
+#      - name: Upload instrumented test reports
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: instrumented-unit-test-report
+#          path: app/build/reports/androidTests/connected/testDebugUnitTest
