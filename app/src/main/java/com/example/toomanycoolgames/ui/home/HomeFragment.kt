@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toomanycoolgames.data.model.TMKGGameRelease
 import com.example.toomanycoolgames.databinding.HomeFragmentBinding
@@ -36,6 +37,12 @@ class HomeFragment : Fragment() {
         currentGames.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    (layoutManager as LinearLayoutManager).orientation
+                )
+            )
             adapter = TMKGGameReleaseListAdapter(games)
         }
     }

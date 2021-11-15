@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.asLiveData
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.toomanycoolgames.data.model.TMKGGameRelease
@@ -46,6 +47,12 @@ class SearchResultFragment : Fragment() {
         binding.resultsList.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
+            addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    (layoutManager as LinearLayoutManager).orientation
+                )
+            )
             adapter = TMKGGameReleaseListAdapter(results)
         }
     }

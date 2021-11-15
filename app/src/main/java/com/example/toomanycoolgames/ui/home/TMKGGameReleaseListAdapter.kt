@@ -1,5 +1,6 @@
 package com.example.toomanycoolgames.ui.home
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
@@ -32,6 +33,8 @@ class TMKGGameReleaseListAdapter(private val games: List<TMKGGameRelease>) :
         private val gameBinding: ItemGameBinding
     ) : RecyclerView.ViewHolder(gameBinding.root) {
 
+        private val resources: Resources = gameBinding.root.resources
+
         fun bind(gameValue: TMKGGameRelease) {
             val game = gameValue.game
             gameBinding.apply {
@@ -49,8 +52,14 @@ class TMKGGameReleaseListAdapter(private val games: List<TMKGGameRelease>) :
                     .fallback(R.drawable.ic_baseline_bookmark_border_24)
                     .into(gameCover)
 
-                gameStateEmoji.text =
-                    root.context.resources.getStringArray(R.array.play_status_emoji_icons)[game.playStatusPosition]
+                val statusText = if (game.playStatusPosition != 0) {
+                    resources.getStringArray(R.array.play_status)[game.playStatusPosition]
+                } else {
+                    "Unsure... ❓"
+                }
+                gameStatusSubhead.text =
+                    resources.getString(R.string.formatCurrentGameStatus, statusText)
+
 
                 gameItem.setOnClickListener { view ->
                     view.findNavController()
@@ -65,7 +74,10 @@ class TMKGGameReleaseListAdapter(private val games: List<TMKGGameRelease>) :
             return oldItem === newItem
         }
 
-        override fun areContentsTheSame(oldItem: TMKGGameRelease, newItem: TMKGGameRelease): Boolean {
+        override fun areContentsTheSame(
+            oldItem: TMKGGameRelease,
+            newItem: TMKGGameRelease
+        ): Boolean {
             return oldItem.game.gameId == newItem.game.gameId
         }
     }
