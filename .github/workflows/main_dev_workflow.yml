@@ -1,7 +1,9 @@
 name: Standard Tasks
 
 on:
-  push
+  push:
+    branches:
+      - main
 
 jobs:
   build_and_local_test:
