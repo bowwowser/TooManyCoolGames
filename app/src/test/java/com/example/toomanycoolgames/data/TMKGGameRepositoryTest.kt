@@ -57,7 +57,7 @@ class TMKGGameRepositoryTest {
     @Test
     fun allTrackedGames_oneGameFetched() = runBlockingTest {
         repo.observeGameRelease(TEST_API_ID)
-        val trackedGames = computeResult(repo.allTrackedGames.getOrAwaitValue())
+        val trackedGames = computeResult(repo.allTrackedGames.getOrAwaitValue()) ?: emptyList()
         assertThat(trackedGames.size, equalTo(1))
         assertThat(trackedGames[0].releaseDates.size, equalTo(3))
     }
@@ -65,7 +65,7 @@ class TMKGGameRepositoryTest {
     @Test
     fun allTrackedGames_gamesSearchedButNotCached() = runBlockingTest {
         repo.searchApiForGames("test")
-        val trackedGames = computeResult(repo.allTrackedGames.getOrAwaitValue())
+        val trackedGames = computeResult(repo.allTrackedGames.getOrAwaitValue()) ?: emptyList()
         assertThat(trackedGames.size, equalTo(0))
     }
 

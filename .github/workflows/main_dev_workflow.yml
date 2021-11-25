@@ -45,31 +45,6 @@ jobs:
           name: local-unit-test-report
           path: app/build/reports/tests/testDebugUnitTest
 
-      - name: Stop Gradle daemon
-        if: always()
-        run: ./gradlew --stop
-
-  lint:
-    name: Run quality checks
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Cache Gradle packages
-        uses: actions/cache@v2
-        with:
-          key: ${{ runner.os }}-lint-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-lint-
-            ${{ runner.os }}-
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-
-      - name: Run linter & other checks
-        run: ./gradlew lint
-
       - name: Upload lint report
         uses: actions/upload-artifact@v2
         with:
@@ -79,6 +54,38 @@ jobs:
       - name: Stop Gradle daemon
         if: always()
         run: ./gradlew --stop
+
+# combined with main build task now; may return to separate task later
+#  lint:
+#    name: Run quality checks
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      - name: Cache Gradle packages
+#        uses: actions/cache@v2
+#        with:
+#          key: ${{ runner.os }}-lint-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+#          restore-keys: |
+#            ${{ runner.os }}-lint-
+#            ${{ runner.os }}-
+#          path: |
+#            ~/.gradle/caches
+#            ~/.gradle/wrapper
+#
+#      - name: Run linter & other checks
+#        run: ./gradlew lint
+#
+#      - name: Upload lint report
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: lint-report
+#          path: app/build/reports/lint-results-debug.html
+#
+#      - name: Stop Gradle daemon
+#        if: always()
+#        run: ./gradlew --stop
 
 # expensive; low priority for GH actions
 # TODO use reactivecircus/android-emulator-runner for running the tests
