@@ -1,8 +1,26 @@
-# Too Many Cool Games [TMKG] (tentative)
+# Too Many Cool Games / TMKG (tentative)
 
 Help keep track of all the cool games being released!
 
 ## Building
+
+### Requirements
+
+* Register a [Twitch Account and Application](https://dev.twitch.tv/console/apps/create)
+  for [IGDB API](https://api-docs.igdb.com/#account-creation) access.
+* Authenticate as a Twitch Developer
+  to [generate an access token](https://api-docs.igdb.com/#authentication).
+* Add a `dotenv`-style file for IGDB keys and information
+    * Path: `<project-root>/app/src/main/assets/env`
+    * Required keys:
+        * `IGDB_CLIENT_ID`: Your Twitch application's Client ID.
+        * `IGDB_ACCESS_TOKEN`: Provided from your OAuth2 authentication response (`access_token`).
+        * `IGDB_EXPIRES_SEC`: Provided from your OAuth2 authentication response (`expires_in`).
+        * `IGDB_REGENERATED_TIMESTAMP`: Unix epoch (ms) when the token was
+          generated ([Epoch Converter](https://www.epochconverter.com/) is a quick and easy way to
+          fetch yours)
+
+### Instructions
 
 Build the app:
 
@@ -47,7 +65,7 @@ IN PROGRESS
 
 ### Package Overview
 
-TLD: `com.example.toomanycoolgames`
+Top-Level Domain: `com.example.toomanycoolgames`
 
 | Name | Description | 
 | --- | --- | 

@@ -1,7 +1,7 @@
 package com.example.toomanycoolgames.ui.info
 
 import androidx.lifecycle.*
-import com.example.toomanycoolgames.data.TMKGGameRepository
+import com.example.toomanycoolgames.data.GameRepository
 import com.example.toomanycoolgames.data.computeResult
 import com.example.toomanycoolgames.data.model.TMKGGameRelease
 import com.example.toomanycoolgames.logDebug
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InfoViewModel @Inject constructor(
-    private val repository: TMKGGameRepository,
+    private val repository: GameRepository,
     state: SavedStateHandle
 ) : ViewModel() {
 

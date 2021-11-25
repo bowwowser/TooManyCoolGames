@@ -2,8 +2,11 @@ package com.example.toomanycoolgames.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.toomanycoolgames.data.GameRepository
 import com.example.toomanycoolgames.data.TMKGGameRepository
+import com.example.toomanycoolgames.data.api.ApiWrapper
 import com.example.toomanycoolgames.data.api.IGDBApiWrapper
+import com.example.toomanycoolgames.data.db.DBWrapper
 import com.example.toomanycoolgames.data.db.RoomDBWrapper
 import com.example.toomanycoolgames.data.db.TMKGDatabase
 import com.example.toomanycoolgames.data.db.TMKGGameDao
@@ -12,27 +15,41 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.github.cdimascio.dotenv.dotenv
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import javax.inject.Named
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
 class RepositoryModule {
 
-    private val IGDB_CLIENT_ID = "***REMOVED***"
-    private val IGDB_ACCESS_TOKEN = "***REMOVED***"
+    private val dotenv = dotenv {
+        directory = "./assets" // dot at start is IMPORTANT
+        filename = "env"
+    }
+
+    @Provides
+    @Named("clientId")
+    fun providesClientId(): String = dotenv["IGDB_CLIENT_ID"]
+
+    @Provides
+    @Named("accessToken")
+    fun providesAccessToken(): String = dotenv["IGDB_ACCESS_TOKEN"]
 
     @Singleton
     @Provides
-    fun providesGameRepository(
+    fun providesTMKGGameRepository(
         dbWrapper: RoomDBWrapper,
         apiWrapper: IGDBApiWrapper
-    ): TMKGGameRepository {
+    ): GameRepository {
         return TMKGGameRepository(dbWrapper, apiWrapper)
     }
 
     @Singleton
     @Provides
-    fun providesRoomWrapper(gameDao: TMKGGameDao): RoomDBWrapper = RoomDBWrapper(gameDao)
+    fun providesRoomWrapper(gameDao: TMKGGameDao): DBWrapper = RoomDBWrapper(gameDao)
 
     @Singleton
     @Provides
@@ -50,7 +67,13 @@ class RepositoryModule {
 
     @Singleton
     @Provides
-    fun providesIGDBWrapper(): IGDBApiWrapper = IGDBApiWrapper(IGDB_CLIENT_ID, IGDB_ACCESS_TOKEN)
+    fun providesIGDBWrapper(
+        @Named("clientId") clientId: String,
+        @Named("accessToken") accessToken: String
+    ): ApiWrapper = IGDBApiWrapper(clientId, accessToken)
+
+    @Provides
+    fun providesDispatcher(): CoroutineDispatcher = Dispatchers.IO
 }
 
 // TODO sort out callback management

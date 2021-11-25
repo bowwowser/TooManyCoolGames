@@ -7,3 +7,8 @@
 /captures
 .externalNativeBuild
 .cxx
+
+# Don't keep dotenv files
+**/.env
+# dotenv style needed for Android assets
+**/env

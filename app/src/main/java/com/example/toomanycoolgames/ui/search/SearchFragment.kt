@@ -90,5 +90,6 @@ class SearchFragment : Fragment() {
             visibility = View.VISIBLE
             text = getString(R.string.formatErrorWithMessage, exception.toString())
         }
+        binding.progressGamesList.visibility = View.GONE
     }
 }

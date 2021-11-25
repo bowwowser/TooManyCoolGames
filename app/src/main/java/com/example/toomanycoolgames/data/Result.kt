@@ -23,11 +23,11 @@ fun <T> computeResult(result: Result<T>, afterError: () -> Unit = {}): T? {
     }
 }
 
-fun <T> computeResult(result: Result<List<T>>, afterError: () -> Unit = {}): List<T> {
+fun <T> computeResult(result: Result<List<T>>, afterError: () -> Unit = {}): List<T>? {
     return if (result is Result.Success) {
         result.data
     } else {
         afterError.invoke()
-        emptyList()
+        null
     }
 }

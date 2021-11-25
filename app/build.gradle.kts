@@ -45,6 +45,11 @@ android {
 }
 
 dependencies {
+    // TODO file issue re: chopping off last character if not formed correctly
+    //   ex: "/assets" or "/assets/" becomes "/asset
+    //   current logic require "./assets"
+    implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
+
     // Core
     val appcompatVersion = "1.3.1"
     val coreVersion = "1.6.0"

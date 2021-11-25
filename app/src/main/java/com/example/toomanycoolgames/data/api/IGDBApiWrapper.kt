@@ -11,11 +11,17 @@ import com.example.toomanycoolgames.data.model.TMKGGame
 import com.example.toomanycoolgames.data.model.TMKGGameRelease
 import com.example.toomanycoolgames.data.model.TMKGReleaseDate
 import com.example.toomanycoolgames.logError
+import io.github.cdimascio.dotenv.dotenv
 import proto.Game
 import proto.ReleaseDate
 import java.util.*
+import javax.inject.Inject
+import javax.inject.Named
 
-class IGDBApiWrapper(clientId: String, accessToken: String) : ApiWrapper {
+class IGDBApiWrapper @Inject constructor(
+    @Named("clientId") clientId: String,
+    @Named("accessToken") accessToken: String
+) : ApiWrapper {
 
     init {
         IGDBWrapper.setCredentials(clientId, accessToken)
@@ -36,7 +42,7 @@ class IGDBApiWrapper(clientId: String, accessToken: String) : ApiWrapper {
             val games = IGDBWrapper.games(gameSearchQuery(query))
             Success(games.map { it.toTMKGGameRelease() })
         } catch (e: RequestException) {
-            logError(e) { "Error searching IGDB for \"$query\": ${e.message}" }
+            logError(e) { "Error searching IGDB for \"$query\": [${e.statusCode}] ${e.result}" }
             Error(e)
         }
     }
@@ -104,8 +110,12 @@ enum class Fields(val value: String) {
 }
 
 fun checkApiTokenFreshness(): String {
-    val regeneratedDate = 1635273924L // REPLACE when regenerated
-    val expiresIn = 5316092L // REPLACE when regenerated
+    val dotenv = dotenv {
+        directory = "./assets"
+        filename = "env"
+    }
+    val regeneratedDate = dotenv["IGDB_REGENERATED_TIMESTAMP"].toLong()
+    val expiresIn = dotenv["IGDB_EXPIRES_SEC"].toLong()
     val expireDate = (regeneratedDate + expiresIn) * 1000
     val currentMillis = Calendar.getInstance().timeInMillis
 

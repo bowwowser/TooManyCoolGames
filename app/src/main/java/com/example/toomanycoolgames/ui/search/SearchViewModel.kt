@@ -3,9 +3,9 @@ package com.example.toomanycoolgames.ui.search
 import android.content.Context
 import androidx.lifecycle.*
 import com.example.toomanycoolgames.R
+import com.example.toomanycoolgames.data.GameRepository
 import com.example.toomanycoolgames.data.Result.Error
 import com.example.toomanycoolgames.data.Result.Success
-import com.example.toomanycoolgames.data.TMKGGameRepository
 import com.example.toomanycoolgames.data.isMainGame
 import com.example.toomanycoolgames.data.model.TMKGGameRelease
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     @ApplicationContext context: Context,
-    private val gameRepository: TMKGGameRepository
+    private val gameRepository: GameRepository
 ) : ViewModel() {
 
     private val _searchResults = MutableSharedFlow<List<TMKGGameRelease>>(replay = 1)
