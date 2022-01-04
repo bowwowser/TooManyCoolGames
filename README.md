@@ -2,6 +2,7 @@
 
 ## Keep track of all the cool games being released!
 [![Build and Test](https://github.com/bowwowser/TooManyCoolGames/actions/workflows/build_and_test.yml/badge.svg)](https://github.com/bowwowser/TooManyCoolGames/actions/workflows/build_and_test.yml)
+![Project license MIT](https://img.shields.io/github/license/bowwowser/TooManyCoolGames?color=brightgreen)
 <br/><br/>
 ![Info page featuring Hades](doc/img/info-page-hades_tiny.png)
 ![Hades info page details](doc/img/info-page-hades-details_tiny.png)
