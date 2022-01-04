@@ -1,8 +1,27 @@
-# Too Many Cool Games / TMKG (tentative)
+# Too Many Cool Games / TMKG
 
-Help keep track of all the cool games being released!
+## Keep track of all the cool games being released!
+![Build and test workflow status badge](https://github.com/bowwowser/TooManyCoolGames/actions/workflows/build_and_test/badge.svg)
+<br/><br/>
+![Info page featuring Hades](doc/img/info-page-hades_tiny.png)
+![Hades info page details](doc/img/info-page-hades-details_tiny.png)
 
-## Building
+## Summary
+
+**TMKG** helps you keep track of video games and their releases, past present, or future!
+
+Includes features to make recording your notes & personal status quick and easy,
+making those day-to-day gaming decisions even easier.
+
+Developed using both official and community-supported libraries, for a cohesive development and user experience. Featuring:
+* [Android Jetpack](https://developer.android.com/jetpack) (Room, Navigation, Lifecycle Components) for a solid app architecture
+* [Glide](https://github.com/bumptech/glide), for easy image loading and management
+* [Material Components for Android](https://material.io/develop/android) for clean UI/UX elements
+* [JUnit](https://junit.org/), an industry standard JVM testing framework
+
+A more detailed overview can be found here: [App Overview](/doc/app-overview.md) 
+
+## Build
 
 ### Requirements
 
@@ -39,40 +58,3 @@ Run lint checks:
 ```shell
 ./gradlew check
 ```
-
-## App Overview
-
-### Brief Summary
-
-**TMKG** allows the user to keep track of video games and their releases, as well as their personal
-status and notes relating to the game, in order to facilitate decisions with their day-to-day gaming
-experience.
-
-### Extended Summary
-
-**TMKG** allows the user to:
-
-* Search through one or more online APIs in order to effectively find desired game listings for
-  further info
-* View details about a specific game, including personal notes
-* Keep track of a list of games in an easily scannable & parsable view, making it able to review
-
-### Architecture Diagram
-
-```
-IN PROGRESS
-```
-
-### Package Overview
-
-Top-Level Domain: `com.example.toomanycoolgames`
-
-| Name | Description | 
-| --- | --- | 
-| `.data` | Data layer code for fetching, caching, and storing game-related info (info fetched from API, personal notes, etc.) | 
-| `.di` | Dependency injection layer; simplifies in-app dependency management | 
-| `.ui` | UI top-layer package, for main activity and shared UI code |
-| `.ui.home` | UI layer code related to home screen for viewing tracked games |
-| `.ui.info` | UI layer code related to info screen for viewing detailed info for a specific game |
-| `.ui.search` | UI layer code related to search screen for finding game info on API through filters, sorting, and other means |
-
